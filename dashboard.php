@@ -14,15 +14,15 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="./Style/dashboard.css">
-    <link rel="icon" type="image/png" href="./sklogo.png">
+    <link rel="stylesheet" href="style/dashboard.css">
+    <link rel="icon" type="image/png" href="img/sklogo.png">
 </head>
 
 <body>
     <div class="sidebar">
         <div class="logo">
             <h1>
-                <p><img src="sklogo.png" class="Logo" width="80px" alt="Logo" class="logo"></p>
+                <p><img src="img/sklogo.png" class="Logo" width="80px" alt="Logo" class="logo"></p>
             </h1>
         </div>
         <ul class="menu">
@@ -53,9 +53,9 @@ if (!isset($_SESSION['user_id'])) {
     <div class="content">
         <div class="header">
             <div class="user-profile">
-                <img src="sk.users.png" alt="User" class="user-icon">
+                <img src="img/sk.users.png" alt="User" class="user-icon">
                 <div class="notifications">
-                    <img src="sk.notification.png" alt="Notifications">
+                    <img src="img/sk.notification.png" alt="Notifications">
                 </div>
             </div>
         </div>
