@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "ssssssssssssssssssisssssssssi", 
+        "ssssssssssssssssssissssssssss", 
         $first_name, $last_name, $address, $gender, $user_bday, $contact_number, 
         $status, $occupation, $sports, $precinct_number, $mothers_maiden_name, 
         $mother_bday, $mother_contact_number, $mother_occupation, $fathers_name, 
