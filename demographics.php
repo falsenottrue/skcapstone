@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $vote_last_sk_election = isset($_POST['vote_last_sk_election']) ? 1 : 0;
     $registered_national_voter = isset($_POST['registered_national_voter']) ? 1 : 0;
     $attended_sk_assembly = isset($_POST['attended_sk_assembly']) ? 1 : 0;
-    $sk_assembly_reason = $_POST['sk_assembly_reason'] ?? null;
+    $sk_assembly_reason = $_POST['sk_assembly_reason'];
 
     // Insert data into database
     $sql = "INSERT INTO demographics (
