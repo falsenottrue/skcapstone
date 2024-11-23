@@ -12,7 +12,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-            <p><a href="Community_Events.php"><img src="sklogo.png" alt="Logo" class="logo"></a></p>
+            <p><a href="Community_Events.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
             <p><strong>Community Events</strong></p>
             </a>
         </div>
@@ -38,7 +38,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="home.php"><img src="sk.NBA.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="home.php"><img src="img/sk.NBA.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -51,7 +51,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Scholar_Program.php"><img src="sk.scholar.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="Scholar_Program.php"><img src="img/sk.scholar.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -64,7 +64,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="dental_mission.php"><img src="sk.dental.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="dental_mission.php"><img src="img/sk.dental.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -77,7 +77,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Feeding_Program.php"><img src="sk.feeding.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="Feeding_Program.php"><img src="img/sk.feeding.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -90,7 +90,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Educational_Programs.php"><img src="sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="Educational_Programs.php"><img src="img/sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -103,7 +103,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Program_Sustainability.php"><img src="sk.sustainable.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="Program_Sustainability.php"><img src="img/sk.sustainable.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
@@ -116,7 +116,7 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Inclusive_Programming.php"><img src="sk.inclusive.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="Inclusive_Programming.php"><img src="img/sk.inclusive.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
