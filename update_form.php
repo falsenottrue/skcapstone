@@ -106,6 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Update Demographics Form</title>
+    <link rel="stylesheet" href="style/style2.css">
+    <link rel="icon" type="image/png" href="img/sklogo.png">
     <style>
         /* Add basic styling for form */
         body { font-family: Arial, sans-serif; }
