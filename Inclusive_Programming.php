@@ -10,7 +10,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="Inclusive_Programming.php"><img src="sk.inclusive.png" alt="Logo" class="logo"></a></p>
+             <p><a href="Inclusive_Programming.php"><img src="img/sk.inclusive.png" alt="Logo" class="logo"></a></p>
              <p><strong>Inclusive</strong></p>   
            </a>
         </div>

@@ -106,6 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Update Demographics Form</title>
+    <style>
+        /* Add basic styling for form */
+        body { font-family: Arial, sans-serif; }
+        form { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; }
+        label { display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        .checkbox-label { display: inline; margin-right: 10px; }
+    </style>
 </head>
 <body>
     <h2>Update Demographics Form</h2>
