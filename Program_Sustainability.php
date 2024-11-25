@@ -10,7 +10,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="Program_Sustainability.php"><img src="sk.sustainable.jpg" alt="Logo" class="logo"></a></p>
+             <p><a href="Program_Sustainability.php"><img src="img/sk.sustainable.jpg" alt="Logo" class="logo"></a></p>
              <p><strong>Sustainability</strong></p>   
            </a>
         </div>

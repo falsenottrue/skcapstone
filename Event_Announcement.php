@@ -10,7 +10,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="Event_Announement.php"><img src="sklogo.png" alt="Logo" class="logo"></a></p>
+             <p><a href="Event_Announement.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
              <p><strong>EventAnnouncement</strong></p>   
            </a>
         </div>

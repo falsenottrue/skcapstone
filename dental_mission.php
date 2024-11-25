@@ -10,7 +10,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="dental_mission.php"><img src="sk.dental.jpg" alt="Logo" class="logo"></a></p>
+             <p><a href="dental_mission.php"><img src="img/sk.dental.jpg" alt="Logo" class="logo"></a></p>
              <p><strong>DentalMission</strong></p>   
            </a>
         </div>

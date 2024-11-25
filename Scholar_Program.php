@@ -10,7 +10,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="Scholar_Program.php"><img src="sk.scholar.jpg" alt="Logo" class="logo"></a></p>
+             <p><a href="Scholar_Program.php"><img src="img/sk.scholar.jpg" alt="Logo" class="logo"></a></p>
              <p><strong>Scholar</strong></p>   
            </a>
         </div>
