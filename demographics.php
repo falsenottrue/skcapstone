@@ -7,7 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Gather form data
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $address = $_POST['address'];
@@ -18,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $occupation = $_POST['occupation'];
     $sports = $_POST['sports'];
     $precinct_number = $_POST['precinct_number'];
-    
-    // Additional Information
+
     $mothers_maiden_name = $_POST['mothers_maiden_name'];
     $mother_bday = $_POST['mother_bday'];
     $mother_contact_number = $_POST['mother_contact_number'];
@@ -31,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pwd = isset($_POST['pwd']) ? 1 : 0;
     $solo_parent_household = isset($_POST['solo_parent_household']) ? 1 : 0;
 
-    // Demographic Characteristics
     $youth_classification = $_POST['youth_classification'];
     $specific_needs = $_POST['specific_needs'];
     $youth_age_group = $_POST['youth_age_group'];
@@ -42,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attended_sk_assembly = isset($_POST['attended_sk_assembly']) ? 1 : 0;
     $sk_assembly_reason = $_POST['sk_assembly_reason'] ?? null;
 
-    // Insert data into database
     $sql = "INSERT INTO demographics (
                 first_name, last_name, address, gender, user_bday, contact_number, 
                 status, occupation, sports, precinct_number, mothers_maiden_name, 
@@ -88,19 +84,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style/style2.css">
     <link rel="icon" type="image/png" href="img/sklogo.png">
     <style>
-        /* Add basic styling for form */
         body { font-family: Arial, sans-serif; }
         form { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; }
         label { display: block; margin-top: 10px; }
         input, select { width: 100%; padding: 8px; margin-top: 5px; }
         .checkbox-label { display: inline; margin-right: 10px; }
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #submit-btn {
+            cursor: not-allowed;
+            background-color: #ccc;
+        }
     </style>
 </head>
 <body>
+    <div id="consentModal" class="modal">
+        <div class="modal-content">
+            <h3>Data Security Act</h3>
+            <p>
+                By proceeding with this form, you agree to the collection and use of your personal data
+                as governed by the Data Security Act. Please confirm your consent to continue.
+            </p>
+            <label>
+                <input type="checkbox" id="consentCheckbox"> I consent to the use of my personal data.
+            </label>
+            <button id="proceed-btn" disabled>Proceed</button>
+        </div>
+    </div>
+
     <h2>Demographics Form</h2>
     <form action="demographics.php" method="POST">
 
-        <!-- Personal Info Section -->
         <h3>Personal Information</h3>
         <label>First Name:</label>
         <input type="text" name="first_name" required>
@@ -152,7 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Precinct Number:</label>
         <input type="text" name="precinct_number">
 
-        <!-- Additional Information Section -->
         <h3>Additional Information</h3>
         <label>Mother's Maiden Name:</label>
         <input type="text" name="mothers_maiden_name">
@@ -181,7 +224,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label class="checkbox-label"><input type="checkbox" name="pwd" value="1"> PWD</label>
         <label class="checkbox-label"><input type="checkbox" name="solo_parent_household" value="1"> Solo Parent Household</label>
 
-        <!-- Demographic Characteristics Section -->
         <h3>Demographic Characteristics</h3>
         <label>Youth Classification:</label>
         <select name="youth_classification" required>
@@ -239,5 +281,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br><br>
         <button type="submit">Submit</button>
     </form>
+    <script>
+        const modal = document.getElementById("consentModal");
+        const proceedBtn = document.getElementById("proceed-btn");
+        const consentCheckbox = document.getElementById("consentCheckbox");
+        const submitBtn = document.getElementById("submit-btn");
+
+        window.onload = () => {
+            modal.style.display = "block";
+        };
+
+
+        consentCheckbox.onchange = () => {
+            proceedBtn.disabled = !consentCheckbox.checked;
+        };
+
+        proceedBtn.onclick = () => {
+            modal.style.display = "none";
+            submitBtn.disabled = false;
+            submitBtn.style.cursor = "pointer";
+            submitBtn.style.backgroundColor = "#007BFF";
+        };
+    </script>
 </body>
 </html>
