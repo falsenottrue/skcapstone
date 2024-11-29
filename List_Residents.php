@@ -11,7 +11,7 @@
     <div class="nav">
         <div class="logo">
              <p><a href="List_Residents.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
-             <p><strong>List Of Residents</strong></p>   
+             <p><strong>ListOfResidents</strong></p>   
            </a>
         </div>
 
