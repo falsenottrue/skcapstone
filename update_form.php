@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch existing data for the specified ID
 $sql = "SELECT * FROM demographics WHERE dm_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -17,9 +16,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 
-// Check if the user exists
 if ($result->num_rows > 0) {
-    // Fetch the user's data
     $row = $result->fetch_assoc();
 } else {
     echo "User not found.";
@@ -28,9 +25,7 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 
-// Update record if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Gather form data
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $address = $_POST['address'];
@@ -41,8 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $occupation = $_POST['occupation'];
     $sports = $_POST['sports'];
     $precinct_number = $_POST['precinct_number'];
-    
-    // Additional Information
+
     $mothers_maiden_name = $_POST['mothers_maiden_name'];
     $mother_bday = $_POST['mother_bday'];
     $mother_contact_number = $_POST['mother_contact_number'];
@@ -54,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pwd = isset($_POST['pwd']) ? 1 : 0;
     $solo_parent_household = isset($_POST['solo_parent_household']) ? 1 : 0;
 
-    // Demographic Characteristics
     $youth_classification = $_POST['youth_classification'];
     $specific_needs = $_POST['specific_needs'] ?? null;
     $youth_age_group = $_POST['youth_age_group'];
@@ -65,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attended_sk_assembly = isset($_POST['attended_sk_assembly']) ? 1 : 0;
     $sk_assembly_reason = $_POST['sk_assembly_reason'] ?? null;
 
-    // Update data in the database
     $sql = "UPDATE demographics SET 
                 first_name = ?, last_name = ?, address = ?, gender = ?, user_bday = ?, 
                 contact_number = ?, status = ?, occupation = ?, sports = ?, precinct_number = ?, 
@@ -109,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style/style2.css">
     <link rel="icon" type="image/png" href="img/sklogo.png">
     <style>
-        /* Add basic styling for form */
         body { font-family: Arial, sans-serif; }
         form { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; }
         label { display: block; margin-top: 10px; }
@@ -118,10 +109,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <h2>Update Demographics Form</h2>
-    <form method="POST" action="">
+    <div class="nav">
+        <div class="logo">
+             <p><strong>UpdateForm</strong></p>   
+           </a>
+        </div>
 
-        <!-- Personal Info Section -->
+        <div class="right-links">
+            <a href="Community_Events.php"> Back </a>
+            <a href="logout.php"> <button class="btn"> Logout </button> </a>
+
+        </div>
+    </div>
+    <form method="POST" action="">
         <label>First Name:</label>
         <input type="text" name="first_name" value="<?php echo htmlspecialchars($row['first_name']); ?>" required><br>
 
@@ -172,7 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Precinct Number:</label>
         <input type="text" name="precinct_number" value="<?php echo htmlspecialchars($row['precinct_number']); ?>"><br>
 
-        <!-- Additional Information Section -->
         <label>Mother's Maiden Name:</label>
         <input type="text" name="mothers_maiden_name" value="<?php echo htmlspecialchars($row['mothers_maiden_name']); ?>" required><br>
 
@@ -203,7 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Solo Parent Household:</label>
         <input type="checkbox" name="solo_parent_household" <?php if ($row['solo_parent_household']) echo 'checked'; ?>><br>
 
-        <!-- Demographic Characteristics Section -->
         <label>Youth Classification:</label>
         <select name="youth_classification" required>
             <option value="In_School_Youth" <?php if ($row['youth_classification'] == 'In_School_Youth') echo 'selected'; ?>>In School Youth</option>
