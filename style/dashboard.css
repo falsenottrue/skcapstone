@@ -7,20 +7,31 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    background: skyblue;
+    background: white;
 }
 
 .Logo{
     border-radius: 100%;
 }
 
-.sidebar {
-    width: 180px;
-    background-color: skyblue;
+.sidebar  {
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    transition: all 0.5s linear;
+    width: 110px;
+    background-color: white;
     color: white;
     box-shadow: 0px 2px 5px rgba(10, 10, 10, 0.1);
-    padding: 20px;
-    height: 135vh;
+    padding: 0 1.7rem;
+    height: 100vh;
+}
+
+.sidebar:hover {
+        width: 240px;
+        transition: 0.5s;
 }
 
 .logo {
@@ -42,7 +53,7 @@ body {
 }
 
 .menu li:hover {
-    background-color: skyblue; 
+    background-color: white; 
 }
 
 .content {
@@ -79,7 +90,7 @@ body {
 }
 
 .breadcrumb {
-    color: #888;
+    color:white;
 }
 
 .cards {
@@ -107,7 +118,7 @@ body {
 }
 
 .chart {
-    background-color: skyblue;
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
@@ -135,7 +146,7 @@ table {
 }
 
 thead {
-    background-color: skyblue; 
+    background-color: white; 
     color: #333;
 }
 
@@ -151,7 +162,7 @@ th {
 }
 
 tbody tr:hover {
-    background-color: skyblue; 
+    background-color: white; 
 }
 
 td {
