@@ -117,8 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="right-links">
             <a href="dashboard.php"> Back </a>
-            <a href="logout.php"> <button class="btn"> Logout </button> </a>
-
         </div>
     </div>
     <form method="POST" action="">
