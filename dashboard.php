@@ -68,50 +68,50 @@ if (!isset($_SESSION['user_id'])) {
                             <th><img src="img/sklogo.png" class="Logo" width="70px" alt="Logo" class="logo"></th>
                             <th>EMERGENCY HOTLINES</th>
                             <th></th>
-                            <th><img src="sk.qc.jpg" class="Logo" width="70px" alt="Logo" class="logo"></th>
+                            <th><img src="img/sk.qc.jpg" class="Logo" width="70px" alt="Logo" class="logo"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><img src="sk.NDRRMC.jpg" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.NDRRMC.jpg" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>NDRRMC</strong> National Disaster and Risk Reduction and Management Council Tel:911-1406,912-2665912-5668</td>
-                            <td><img src="sk.red cross hotline.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.redcrosshotline.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>RED CROSS HOTLINE</strong> Tel:143(02)527-0000</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.PNP.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.PNP.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>PNP</strong> Philippine National Police Tel:117,722-0650 09178475757</td>
-                            <td><img src="sk.nlex.jpg" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.nlex.jpg" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>NLEX</strong> North Luzon Expressway Tel:(02)3-500,(02)580-8900</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.NCR.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.NCR.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>(NCR)BUREAU OF FIRE PROTACTION</strong> Tel:(02)426-0219(02)426-3812,(02)426-0242</td>
-                            <td><img src="SKsctex.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/SKsctex.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>SCTEX</strong> Subic-Clark-Tarlac Expressway Tel:0920-92-SCTEX(72839)</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.DOTC.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.DOTC.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>DOTC</strong> Department of Trasportation and Communications-Central T:7890</td>
-                            <td><img src="sk.skyway.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.skyway.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>SKYWAY SYSTEM</strong> Tel:(20)776-7777</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.MMDA.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.MMDA.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>MMDA</strong> Metro Manila Developement Authority Tel:136,(20)882-0925</td>
-                            <td><img src="sk.SLEX.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.SLEX.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>SLEX</strong>   South Luzon Expressway Tel:(20)824-2282(20)7763909</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.PCG.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.PCG.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>PHILIPINE COAST GUARD</strong> Tel:(20)527-8481</td>
-                            <td><img src="sk.DPWH.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.DPWH.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>DPWH</strong> Department of Public Works and Highways Tel:(20)304-3713(20)304-3904</td>
                         </tr>
                         <tr>
-                            <td><img src="sk.PHIVOLCS.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.PHIVOLCS.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>PHIVOLCS</strong> Tel:(20)426-1468</td>
-                            <td><img src="sk.DSWDD.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
+                            <td><img src="img/sk.DSWD.png" class="Logo" width="50px" alt="Logo" class="logo"></td>
                             <td><strong>DSWD</strong> Department of Social Welfare and Development Tel:(20)931-81-01</td>
                         </tr>
                     </tbody>
