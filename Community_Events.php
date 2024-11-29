@@ -13,7 +13,7 @@
     <div class="nav">
         <div class="logo">
             <p><a href="Community_Events.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
-            <p><strong>Community Events</strong></p>
+            <p><strong>CommunityEvents</strong></p>
             </a>
         </div>
 
