@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="home.php"><img src="sk.NBA.png" alt="Logo" class="logo"></a></p>
+             <p><a href="home.php"><img src="img/sk.NBA.png" alt="Logo" class="logo"></a></p>
              <p><strong>Sportevent</strong></p>   
            </a>
         </div>
@@ -35,23 +35,23 @@ if (!isset($_SESSION['user_id'])) {
         <div class="main-box">
            <div class="top">
             <div class="box">
-                <h1><p><img src="Sk.Basketball.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
+                <h1><p><img src="img/Sk.Basketball.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
                 <p><strong>BASKETBALL</strong>-(Mon 8:30am to 11:30am) </p>
             </div>
             <div class="box">
-                <h1><p><img src="SK.Volleyball.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
+                <h1><p><img src="img/SK.Volleyball.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
                 <p><strong>VOLLEYBALL</strong>-(Tue 3:00pm to 5:00pm) </p>      
             </div>
             <div class="box">
-                <h1><p><img src="sk.Badminton.jpg" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
+                <h1><p><img src="img/sk.Badminton.jpg" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
                 <p><strong>BADMINTON</strong>-(Fri 6:00am to 10:00am) </p>      
             </div>
             <div class="box">
-                <h1><p><img src="sk.Swimming.jpg" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
+                <h1><p><img src="img/sk.Swimming.jpg" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
                 <p><strong>SWIMMING</strong>-(Sat 4:00pm to 8:00pm) </p>
             </div>
             <div class="box">
-                <h1><p><img src="sk.Dancing.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
+                <h1><p><img src="img/sk.Dancing.png" class="Logo" width="70px" alt="Logo" class="logo"></p></h1>
                 <p><strong>DANCING</strong>-(Sun 6:30am to 11:00am) </p>
             </div>
            </div> 
