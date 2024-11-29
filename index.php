@@ -13,9 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $usernm = $_POST['usernm'];
     $passwrd = $_POST['passwrd'];
 
-    // $sql = "SELECT * FROM users WHERE usernm = '$usernm'";
-    // $result = $conn->query($sql);
-
     $sql = "SELECT * FROM users WHERE usernm = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usernm);

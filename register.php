@@ -11,8 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwrd = password_hash($_POST['passwrd'], PASSWORD_DEFAULT);
 
 
-    // $sql = "SELECT * FROM users WHERE usernm = '$usernm'";
-    // $result = $conn->query($sql);
     $sql = "SELECT * FROM users WHERE usernm = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usernm);
@@ -26,17 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $usernm, $email, $passwrd);
 
-        // if ($conn->query($sql) === TRUE) {
-        //     echo "New record created successfully. <a href='demographics.php'>Fill out your Personal Information</a>";
-        // } else {
-        //     echo "Error: " . $sql . "<br>" . $conn->error;
-        // }
         if ($stmt->execute()) {
-            // Get the user_id of the newly registered user
             $user_id = $conn->insert_id;
 
-            // Set session variables to log the user in immediately after registration
-            $_SESSION['user_id'] = $user_id; // Store user_id from the database
+            $_SESSION['user_id'] = $user_id;
             $_SESSION['usernm'] = $usernm;
 
             header("Location: demographics.php");
@@ -45,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Close the statement and the database connection
     $stmt->close();
     $conn->close();
 }
