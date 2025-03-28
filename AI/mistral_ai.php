@@ -35,7 +35,6 @@ function generateQuiz($flashcard_content) {
     '$flashcard_content'
 
     The output format must be:
-
     Question: <question text>
     A) <option A>
     B) <option B>
@@ -45,12 +44,14 @@ function generateQuiz($flashcard_content) {
 
     $raw_quiz = askMistral($quiz_prompt);
 
-    preg_match('/\*\*Question:\*\* (.*?)\n/', $raw_quiz, $question_match);
-    preg_match('/\*\*A\)\*\* (.*?)\n/', $raw_quiz, $a_match);
-    preg_match('/\*\*B\)\*\* (.*?)\n/', $raw_quiz, $b_match);
-    preg_match('/\*\*C\)\*\* (.*?)\n/', $raw_quiz, $c_match);
-    preg_match('/\*\*D\)\*\* (.*?)\n/', $raw_quiz, $d_match);
-    preg_match('/\*\*Answer:\*\* ([A-D])/', $raw_quiz, $answer_match);
+
+
+    preg_match('/Question:\s*(.*?)\n/', $raw_quiz, $question_match);
+    preg_match('/A\)\s*(.*?)\n/', $raw_quiz, $a_match);
+    preg_match('/B\)\s*(.*?)\n/', $raw_quiz, $b_match);
+    preg_match('/C\)\s*(.*?)\n/', $raw_quiz, $c_match);
+    preg_match('/D\)\s*(.*?)\n/', $raw_quiz, $d_match);
+    preg_match('/Answer:\s*([A-D])/', $raw_quiz, $answer_match);
 
     if ($question_match && $a_match && $b_match && $c_match && $d_match && $answer_match) {
         return [

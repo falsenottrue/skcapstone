@@ -16,6 +16,7 @@ if (!isset($_SESSION['login_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="img/sklogo.png">
     <title>AI Flashcard & Quiz Generator</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; }
@@ -43,6 +44,7 @@ if (!isset($_SESSION['login_id'])) {
 </head>
 
 <body>
+    
     <h1>AI-Powered Flashcards & Quizzes</h1>
     
     <form method="POST">
