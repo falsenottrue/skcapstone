@@ -12,7 +12,7 @@
     <div class="nav">
         <div class="logo">
              <p><a href="Scholar_Program.php"><img src="img/sk.scholar.jpg" alt="Logo" class="logo"></a></p>
-             <p><strong>Scholar</strong></p>   
+             <p><strong>Scholarship Program</strong></p>   
            </a>
         </div>
 
