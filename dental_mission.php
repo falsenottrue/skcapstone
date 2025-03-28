@@ -12,7 +12,7 @@
     <div class="nav">
         <div class="logo">
              <p><a href="dental_mission.php"><img src="img/sk.dental.jpg" alt="Logo" class="logo"></a></p>
-             <p><strong>DentalMission</strong></p>   
+             <p><strong>Dental Mission</strong></p>   
            </a>
         </div>
 
