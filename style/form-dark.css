@@ -1,10 +1,9 @@
-/* Dark mode styling */
+
 body {
     background-color: #121212 !important;
     color: #E0E0E0 !important;
 }
 
-/* Form container */
 .container {
     background: #1E1E1E !important;
     padding: 30px;
@@ -12,12 +11,10 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Labels */
 label {
     color: #E0E0E0 !important;
 }
 
-/* Form fields */
 .form-control {
     background-color: #232323 !important;
     color: #E0E0E0 !important;
@@ -28,20 +25,17 @@ label {
     color: #999 !important;
 }
 
-/* Fix white background issue */
 .mb-3 {
     background-color: #1E1E1E !important;
     padding: 10px;
     border-radius: 8px;
 }
 
-/* Select dropdown */
 select.form-control {
     background-color: #232323 !important;
     color: #E0E0E0 !important;
 }
 
-/* Buttons */
 .btn-primary {
     background-color: #4c44b6 !important;
     border-color: #4c44b6 !important;
@@ -52,7 +46,6 @@ select.form-control {
     background-color: #39338b !important;
 }
 
-/* Modal */
 .modal-content {
     background: #1E1E1E !important;
     color: #E0E0E0 !important;
@@ -66,7 +59,6 @@ select.form-control {
     border-top: 1px solid #444 !important;
 }
 
-/* Checkbox */
 .form-check-input {
     background-color: #232323 !important;
     border: 1px solid #555 !important;
@@ -77,7 +69,6 @@ select.form-control {
     border-color: #4c44b6 !important;
 }
 
-/* Guardian Section */
 #guardian_section {
     background-color: #232323 !important;
     padding: 15px;

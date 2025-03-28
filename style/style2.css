@@ -38,10 +38,10 @@ body {
 }
 
 .box2 img {
-        width: 400px; /* Adjust as needed */
-        height: 500px; /* Adjust as needed */
-        object-fit: cover; /* Ensures the image fills the area while maintaining aspect ratio */
-        border-radius: 10px; /* Optional: Adds rounded corners */    
+        width: 400px; 
+        height: 500px; 
+        object-fit: cover;
+        border-radius: 10px;
 }
 
 .form-box {
