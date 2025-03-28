@@ -43,7 +43,6 @@ function generateQuiz($flashcard_content) {
 
     $raw_quiz = askMistral($quiz_prompt);
 
-    // **Extract the question and answer choices**
     preg_match('/\*\*Question:\*\* (.*?)\n/', $raw_quiz, $question_match);
     preg_match('/\*\*A\)\*\* (.*?)\n/', $raw_quiz, $a_match);
     preg_match('/\*\*B\)\*\* (.*?)\n/', $raw_quiz, $b_match);

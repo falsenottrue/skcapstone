@@ -1,3 +1,15 @@
+<?php
+include 'connection.php';
+session_start();
+
+if (!isset($_SESSION['login_id'])) {
+    echo "<script>alert('You must be logged in to access this program.'); window.location.href='index.php';</script>";
+    exit();
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +20,7 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; }
         input, button { padding: 10px; margin: 10px; font-size: 16px; }
-        
-        /* Flashcard and Quiz Styling */
+
         .container { display: flex; flex-direction: column; align-items: center; }
         .flashcard, .quiz-card {
             background: white;
@@ -46,11 +57,9 @@ require 'AI/mistral_ai.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $topic = htmlspecialchars($_POST["topic"]);
 
-    // Generate Flashcard
     $flashcard_front = $topic;
     $flashcard_back = generateFlashcard($topic);
 
-    // Generate Quiz
     $quiz_data = generateQuiz($flashcard_back);
     $quiz_question = $quiz_data["question"];
     $quiz_choices = $quiz_data["choices"];
