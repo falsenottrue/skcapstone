@@ -30,16 +30,18 @@ function generateFlashcard($topic) {
 }
 
 function generateQuiz($flashcard_content) {
-    $quiz_prompt = "Based on the following flashcard, generate a structured multiple-choice quiz.
-    Flashcard: '$flashcard_content'
-    
-    Format strictly as follows:
-    **Question:** <question>
-    **A)** <option A>
-    **B)** <option B>
-    **C)** <option C>
-    **D)** <option D>
-    **Answer:** <correct letter (A, B, C, or D)>";
+    $quiz_prompt = "Generate a multiple-choice quiz based on the following flashcard:
+
+    '$flashcard_content'
+
+    The output format must be:
+
+    Question: <question text>
+    A) <option A>
+    B) <option B>
+    C) <option C>
+    D) <option D>
+    Answer: <correct letter>";
 
     $raw_quiz = askMistral($quiz_prompt);
 
