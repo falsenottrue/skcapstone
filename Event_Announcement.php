@@ -11,14 +11,22 @@
 <body>
     <div class="nav">
         <div class="logo">
-             <p><a href="Event_Announement.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
-             <p><strong>EventAnnouncement</strong></p>   
-           </a>
+            <a href="Community_Events.php">
+                <img src="img/sklogo.png" alt="Logo" class="logo">
+            </a>
+            <p><strong>Event Announcement</strong></p>
         </div>
 
         <div class="right-links">
-            <a href="dashboard.php"> Back </a>
+            <a href="index.php"> Back </a>
             <a href="logout.php"> <button class="btn"> Logout </button> </a>
-
         </div>
     </div>
+
+    <div class="main-box">
+        <div class="gallery">
+            <div class="box"><a href = "https://www.facebook.com/SKNagkaisangNayon/posts/pfbid0m6ULnTCPYmJCvsiUTKkKrwXqwMzbTGFKwHajKzEahmASK9XJjjRzsmbJ9CXXsgnul"><img src="img/regbb.jpg"></a></div>
+            
+        </div>
+    </div>
+</body>

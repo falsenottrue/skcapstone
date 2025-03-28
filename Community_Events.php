@@ -14,12 +14,12 @@
     <div class="nav">
         <div class="logo">
             <p><a href="Community_Events.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a></p>
-            <p><strong>CommunityEvents</strong></p>
+            <p><strong>Community Events</strong></p>
             </a>
         </div>
 
         <div class="right-links">
-            <a href="dashboard.php"> Back </a>
+            <a href="index.php"> Back </a>
             <a href="logout.php"> <button class="btn"> Logout </button> </a>
         </div>
     </div>
@@ -39,14 +39,27 @@
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="home.php"><img src="img/sk.NBA.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="sport_event.php"><img src="img/sk.NBA.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>
                     <td>
-                        <p><strong><a href="home.php">Sport Event</a></strong></p>
+                        <p><strong><a href="sport_event.php">Sport Event</a></strong></p>
                     </td>
                     <td><small>Liga Pambarangay</small></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3>
+                            <h1>
+                                <p><a href="Educational_Programs.php"><img src="img/sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                            </h1>
+                        </h3>
+                    </td>
+                    <td>
+                        <p><strong><a href="education_ai.php">Educational Programs</a></strong></p>
+                    </td>
+                    <td><small>AI Assisted Educational Programs</small></td>
                 </tr>
                 <tr>
                     <td>
@@ -86,45 +99,6 @@
                         <p><strong><a href="Feeding_Program.php">Feeding Program</a></strong></p>
                     </td>
                     <td><small>Nourishment</small></td>
-                </tr>
-                <tr>
-                    <td>
-                        <h3>
-                            <h1>
-                                <p><a href="Educational_Programs.php"><img src="img/sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
-                            </h1>
-                        </h3>
-                    </td>
-                    <td>
-                        <p><strong><a href="Educational_Programs.php">Educational Programs</a></strong></p>
-                    </td>
-                    <td><small>(-)</small></td>
-                </tr>
-                <tr>
-                    <td>
-                        <h3>
-                            <h1>
-                                <p><a href="Program_Sustainability.php"><img src="img/sk.sustainable.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
-                            </h1>
-                        </h3>
-                    </td>
-                    <td>
-                        <p><strong><a href="Program_Sustainability.php">Program Sustainability</a></strong></p>
-                    </td>
-                    <td><small>(-)</small></td>
-                </tr>
-                <tr>
-                    <td>
-                        <h3>
-                            <h1>
-                                <p><a href="Inclusive_Programming.php"><img src="img/sk.inclusive.png" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
-                            </h1>
-                        </h3>
-                    </td>
-                    <td>
-                        <p><strong><a href="Inclusive_Programming.php">Inclusive Programming</a></strong></p>
-                    </td>
-                    <td><small>(-)</small></td>
                 </tr>
             </tbody>
         </table>

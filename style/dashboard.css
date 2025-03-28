@@ -7,31 +7,52 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    background: white;
+    background: #121212;
+    color: #E0E0E0;
 }
 
-.Logo{
+.Logo {
     border-radius: 100%;
 }
 
-.sidebar  {
+.main-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-box .bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.sidebar {
     position: sticky;
     top: 0;
     left: 0;
-    bottom: 0;
-    overflow: hidden;
-    transition: all 0.5s linear;
-    width: 110px;
-    background-color: white;
-    color: white;
-    box-shadow: 0px 2px 5px rgba(10, 10, 10, 0.1);
-    padding: 0 1.7rem;
+    width: 180px;
     height: 100vh;
+    background-color: #1E1E1E;
+    color: #E0E0E0;
+    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+    transition: 0.5s;
 }
 
 .sidebar:hover {
-        width: 240px;
-        transition: 0.5s;
+    width: 250px;
+    transition: 0.5s;
+}
+
+.sidebar li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 16px;
 }
 
 .logo {
@@ -53,13 +74,13 @@ body {
 }
 
 .menu li:hover {
-    background-color: white; 
+    background-color: #222;
 }
 
 .content {
     flex-grow: 1;
     padding: 20px;
-    background-color: white;
+    background-color: #121212;
 }
 
 .header {
@@ -90,7 +111,7 @@ body {
 }
 
 .breadcrumb {
-    color:white;
+    color: #BBB;
 }
 
 .cards {
@@ -100,11 +121,12 @@ body {
 }
 
 .card {
-    background-color:rgba76,68,182,0.808;
+    background-color: rgba(76, 68, 182, 0.9);
     padding: 15px;
     border-radius: 8px;
     width: calc(25% - 20px);
-    box-shadow: 0px 2px 5px rgba(10, 10, 10, 0.1);
+    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
 .card h3 {
@@ -118,16 +140,16 @@ body {
 }
 
 .chart {
-    background-color: white;
+    background-color: #1E1E1E;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
 }
 
 .pie-chart, .bar-chart {
     height: 200px;
-    background-color:  rgba(76,68,182,0.808);
+    background-color: rgba(76, 68, 182, 0.9);
     border-radius: 50%;
 }
 
@@ -139,21 +161,22 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color:   rgba(246, 246, 248, 0.808);
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #1E1E1E;
+    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    color: #E0E0E0;
 }
 
 thead {
-    background-color: white; 
-    color: #333;
+    background-color: #333;
+    color: #E0E0E0;
 }
 
 th, td {
     padding: 15px;
     text-align: left;
-    border-bottom: 1px solid rgba(249, 249, 252, 0.808);
+    border-bottom: 1px solid #444;
 }
 
 th {
@@ -162,10 +185,10 @@ th {
 }
 
 tbody tr:hover {
-    background-color: white; 
+    background-color: #222;
 }
 
 td {
     font-size: 14px;
-    color:  black;
+    color: #E0E0E0;
 }

@@ -1,81 +1,99 @@
 <?php
-
 include 'connection.php';
-session_start();
-if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
-    exit();
-}
+session_start(); //access control
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') 
-{
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    $usernm = $_POST['usernm'];
-    $passwrd = $_POST['passwrd'];
-
-    $sql = "SELECT * FROM users WHERE usernm = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $usernm);
+    $stmt = $conn->prepare("SELECT login_id, first_name FROM users WHERE email = ? AND password = ?");
+    $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
     $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-    if ($result->num_rows > 0)
-    {
-        $row = $result->fetch_assoc();
+    if ($user) {
+        $_SESSION['login_id'] = $user['user_id'];
+        $_SESSION['usernm'] = $user['first_name'];
 
-        if (password_verify($passwrd, $row['passwrd']))
-        {
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['usernm'] = $usernm;
-            header("Location: dashboard.php");
-        }
-        else
-        {
-            echo "<script>alert('Invalid Username or Password.');</script>";
-        }
+        header("Location: index.php");
+        exit();
+    } else {
+        echo "<script>alert('Invalid credentials. Please try again.');</script>";
     }
-    else 
-    {
-        echo "<script>alert('Invalid Username or Password.');</script>";
-    }
-
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style2.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style/dashboard.css">
     <link rel="icon" type="image/png" href="img/sklogo.png">
-    <title>SK | Login</title>
 </head>
+
 <body>
-    <div class="container">
-        <div class="box form-box">
-            <header><img src="img/sklogo.png" alt="Logo" class="logo"><br>Login</br></header>
-            <form action="" method="post">
-                
-                <div class="field input">
-                    <label for="username">Username</label>
-                    <input type="text" name="usernm" id="username" autocomplete="off" required>
-                </div>
-
-                <div class="field input">
-                    <label for="password">Password</label>
-                    <input type="password" name="passwrd" id="password" autocomplete="off" required>
-                </div>
-
-                <div class="field">
-                    <input type="submit" class="btn" name="submit" value="Login" required>
-                </div>
-                <div class="links">
-                    Don't have account? <a href="register.php">Sign Up Now</a>
-                </div>
-            </form>
-        </div>
+    <div class="sidebar">
+    <div class="logo">
+        <h1>
+            <p><img src="img/sklogo.png" class="Logo" width="80px" alt="Logo"></p>
+        </h1>
     </div>
+    <ul class="menu">
+        <?php if (isset($_SESSION['login_id'])): ?>
+            <li style="font-family: 'Arial', sans-serif; font-size: 18px; color:rgb(241, 241, 241);">
+                <strong>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</strong>
+            </li>
+            <a href='logout.php'>
+                <li><strong>Logout</strong></li>
+            </a>
+        <?php else: ?>
+            <a href='login.php'>
+                <li><strong>Login/Sign Up</strong></li>
+            </a>
+        <?php endif; ?>
+        <a href='Community_Events.php'>
+            <li><strong>Community Events</strong></li>
+        </a>
+        <a href='Event_Announcement.php'>
+            <li><strong>Event Announcement</strong></li>
+        </a>
+        <a href='register_program.php'>
+            <li><strong>Program Registration</strong></li>
+        </a>
+        <a href='update_form.php'>
+            <li><strong>Update Information</strong></li>
+        </a>
+        <a href="feedback.php">
+            <li><strong>Submit Feedback</strong></li>
+        </a>
+    </ul>
+</div>
+
+
+    <div class="content">
+        <div class="header">
+            <div class="user-profile">
+                <img src="img/sk.users.png" alt="User" class="user-icon">
+                <div class="notifications">
+                    <img src="img/sk.notification.png" alt="Notifications">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main-box">
+           <div class="box">
+            <p><a href="accomplishment_report.php"><img src="img/bebeko.jpg" width="500x" alt="Logo" class="logo"> <img src="img/bebeko2.jpg" width="500x" alt="Logo" class="logo"></a></p>
+            <p><a><img src="img/librengprint.jpg" width="500x" alt="Logo" class="logo"> <img src="img/librelg.jpg" width="500x" alt="Logo" class="logo"></a></p>
+            <p><a><img src="img/lib1.jpg" width="500x" alt="Logo" class="logo">          <img src="img/lib2.jpg" width="500x" alt="Logo" class="logo"></a></p>
+
+            </div>
+        </div>
+
+       
 </body>
-</html>
+</html>               

@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwrd = password_hash($_POST['passwrd'], PASSWORD_DEFAULT);
 
 
-    $sql = "SELECT * FROM users WHERE usernm = ?";
+    $sql = "SELECT * FROM login WHERE usernm = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usernm);
     $stmt->execute();
@@ -20,17 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
         echo "<script>alert('Username already taken. Please choose a different username.');</script>";
     } else {
-        $sql = "INSERT INTO users (usernm, email, passwrd) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO login (usernm, email, passwrd) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $usernm, $email, $passwrd);
+        $stmt->bind_param("sss",  $usernm, $email, $passwrd);
 
         if ($stmt->execute()) {
-            $user_id = $conn->insert_id;
+            $login_id = $conn->insert_id;
 
-            $_SESSION['user_id'] = $user_id;
+            $_SESSION['login_id'] = $login_id;
             $_SESSION['usernm'] = $usernm;
 
-            header("Location: demographics.php");
+            header("Location: user_info.php");
         } else {
             echo "Error: " . $stmt->error;
         }
@@ -76,9 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="submit" class="btn" name="submit" value="Sign Up" required>
                 </div>
                 <div class="links">
-                    Already a member? <a href="index.php">Sign In</a>
+                    Already a member? <a href="login.php">Sign In</a>
                 </div>
-            </form>
+            </form> 
         </div>
     </div>
 </body>

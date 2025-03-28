@@ -12,7 +12,7 @@
     <div class="nav">
         <div class="logo">
              <p><a href="Feeding_Program.php"><img src="img/sk.feeding.jpg" alt="Logo" class="logo"></a></p>
-             <p><strong>FeedingProgram</strong></p>   
+             <p><strong>Feeding Program</strong></p>   
            </a>
         </div>
 
