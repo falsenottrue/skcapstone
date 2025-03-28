@@ -2,13 +2,11 @@
 include 'connection.php';
 session_start();
 
-// Ensure only logged-in users can access this page
 if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'user') {
     echo "<script>alert('You must be logged in as a user to submit feedback.'); window.location.href='index.php';</script>";
     exit();
 }
 
-// Get user info from database
 $login_id = $_SESSION['login_id'];
 $query = $conn->prepare("SELECT user_id, first_name, last_name, email FROM users JOIN login ON users.user_id = login.login_id WHERE login_id = ?");
 $query->bind_param("i", $login_id);
@@ -63,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="feedback_type" class="form-control" required>
                 <option value="Website Feedback">Website Feedback</option>
                 <option value="SK Feedback">SK Feedback</option>
+                <option value="Consultation Feedback">Consultation Feedback</option>
             </select>
         </div>
         <div class="mb-3">

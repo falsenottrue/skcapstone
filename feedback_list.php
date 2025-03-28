@@ -2,13 +2,11 @@
 include 'connection.php';
 session_start();
 
-// Ensure only admins can access this page
 if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'admin') {
     echo "<script>alert('Access denied! Admins only.'); window.location.href='index.php';</script>";
     exit();
 }
 
-// Fetch feedback from database
 $result = $conn->query("
     SELECT feedback.feedback_id, users.first_name, users.last_name, users.gender, users.occupation, feedback.feedback_type, feedback.message, feedback.date_submitted
     FROM feedback
