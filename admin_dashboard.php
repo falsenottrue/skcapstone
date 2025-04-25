@@ -285,7 +285,7 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="admin_dashboard.php">
-                <i class="fas fa-chart-line"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M513.33-580v-260H840v260H513.33ZM120-446.67V-840h326.67v393.33H120ZM513.33-120v-393.33H840V-120H513.33ZM120-120v-260h326.67v260H120Zm66.67-393.33H380v-260H186.67v260ZM580-186.67h193.33v-260H580v260Zm0-460h193.33v-126.66H580v126.66Zm-393.33 460H380v-126.66H186.67v126.66ZM380-513.33Zm200-133.34Zm0 200ZM380-313.33Z"/></svg>
                 <span class="ml-3 item-text"> Dashboard</span>
               </a>
             </li>
@@ -303,7 +303,7 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="update_program.php">
-                <i class="fas fa-landmark fa"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M164.67-160v-66.67H288l-15.33-12.66q-60-49.34-86.34-109Q160-408 160-477.33q0-107.67 63.83-192.84 63.84-85.16 167.5-115.83v69.33q-74 28-119.33 93.84-45.33 65.83-45.33 145.5 0 57 21.33 102.16 21.33 45.17 60 79.84L331.33-278v-115.33H398V-160H164.67Zm404.66-13.33v-70q74.67-28 119.34-93.84 44.66-65.83 44.66-145.5 0-47-21.33-94.16-21.33-47.17-58.67-84.5L630.67-682v115.33H564V-800h233.33v66.67h-124l15.34 14q56.33 53.66 83.83 115.5Q800-542 800-482.67 800-375 736.5-289.5 673-204 569.33-173.33Z"/></svg>
                 <span class="ml-3 item-text">Update Programs</span>
               </a>
             </li>
@@ -311,58 +311,8 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="feedback_list.php">
-                <i class="fas fa-landmark fa"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-152.66h66.67v152.66h666.66v-506.66H146.67v154H80v-154q0-27 19.83-46.84Q119.67-800 146.67-800h666.66q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67Zm312.66-142L412-350l96.33-96H80v-66.67h428.33l-96.33-96 47.33-48 177.34 177.34L459.33-302Z"/></svg>
                 <span class="ml-3 item-text">Feedback List</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="update_form.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Update Information</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="register_program.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Program Registration</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="feedback.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Submit Feedback</span>
-              </a>
-            </li>
-          </ul>
-          <p class="text-muted-nav nav-heading mt-4 mb-1">
-            <span
-              style="
-                font-size: 10.5px;
-                font-weight: bold;
-                font-family: 'Inter', sans-serif;
-              "
-              >OTHER COMPONENTS</span
-            >
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 6</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 7</span>
               </a>
             </li>
           </ul>
