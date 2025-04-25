@@ -1,7 +1,7 @@
 <?php
 
 $servername = "localhost";
-$username = "sksyroot";
+$username = "sksy_root";
 $password = "72-Jz-H!C2KI3xNt";
 $dbname = "sksy_skcapstone";
     
