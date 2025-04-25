@@ -577,6 +577,9 @@ $conn->close();
           <button type="submit" class="btn btn-success">Update Information</button>
         </div>
       </form>
+      <div class="text-end mt-4">
+      <a href="dashboard.php"><button type="submit" class="btn btn-danger">Back</button></a>
+      </div>  
     </div>
   </div>
 </div>
