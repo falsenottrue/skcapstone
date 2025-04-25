@@ -70,7 +70,7 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
                     <td>
                         <h3>
                             <h1>
-                                <p><a href="Educational_Programs.php"><img src="img/sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
+                                <p><a href="education_ai.php"><img src="img/sk.educational.jpg" class="Logo" width="60px" alt="Logo" class="logo"></a></p>
                             </h1>
                         </h3>
                     </td>

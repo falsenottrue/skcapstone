@@ -282,7 +282,7 @@ include 'session_timeout.php';
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="community_events.php">
+              <a class="nav-link" href="Community_Events.php">
                 <i class="fas fa-landmark fa"></i>
                 <span class="ml-3 item-text">Community Events</span>
               </a>
@@ -290,7 +290,7 @@ include 'session_timeout.php';
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="event_announcement.php">
+              <a class="nav-link" href="Event_Announcement.php">
                 <i class="fas fa-landmark fa"></i>
                 <span class="ml-3 item-text">Event Announcement</span>
               </a>
