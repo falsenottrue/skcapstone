@@ -154,7 +154,7 @@ $result = $conn->query("SELECT * FROM programs");
 
     <a href="update_registration_status.php"><button type="submit" name="update_registration" class="btn btn-success w-100">Update Registrations</button></a>
     <hr>
-    <a href="admin_index.php"> <button class="btn btn-danger w-100"> Back </button> </a>
+    <a href="admin_dashboard.php"> <button class="btn btn-danger w-100"> Back </button> </a>
 </body>
 </html>
 

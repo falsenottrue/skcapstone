@@ -54,7 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <div class="box form-box">
-            <header><img src="img/sklogo.png" alt="Logo" class="logo"><br>Registration</br></header>
+            <header>
+                <a href="dashboard.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a>
+                <br>Registration</br>
+            </header>
             <form action="" method="post">
                 
                 <div class="field input">
