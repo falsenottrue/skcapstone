@@ -1,3 +1,9 @@
+<?php
+session_start();
+include 'session_timeout.php';
+?>  
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,3 +28,56 @@
 
         </div>
     </div>
+        <!-- Session Timeout Modal -->
+    <div id="sessionModal" class="modal">
+    <div class="modal-content">
+        <h3>You're inactive</h3>
+        <p>Your session is about to expire. Do you want to stay logged in?</p>
+        <div class="modal-buttons">
+        <button onclick="extendSession()">Yes, Stay Logged In</button>
+        <button onclick="logout()">No, Log Me Out</button>
+        </div>
+    </div>
+    </div>
+
+    <script>
+    let idleTime = 0;
+    const maxIdleTime = 12 * 60; // 12 minutes idle before showing warning
+    const logoutTime = 15 * 60; // 15 minutes total timeout
+
+    // Reset idle timer on activity
+    function resetTimer() {
+    idleTime = 0;
+    }
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.onscroll = resetTimer;
+    document.onclick = resetTimer;
+
+    setInterval(() => {
+    idleTime++;
+
+    // Show modal at 12 minutes idle
+    if (idleTime === maxIdleTime) {
+        document.getElementById("sessionModal").style.display = "block";
+    }
+
+    // Auto-logout at 15 minutes
+    if (idleTime >= logoutTime) {
+        logout();
+    }
+    }, 1000); // check every second
+
+    function extendSession() {
+    fetch("keep_alive.php"); // Pings the server
+    idleTime = 0;
+    document.getElementById("sessionModal").style.display = "none";
+    }
+
+    function logout() {
+    window.location.href = "logout.php";
+    }
+    </script>
+</body>
+</html>

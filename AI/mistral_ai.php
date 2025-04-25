@@ -22,9 +22,20 @@ function askMistral($prompt) {
     $response = file_get_contents($api_url, false, $context);
     return json_decode($response, true)["choices"][0]["message"]["content"] ?? "Error retrieving response.";
 }
-
 function generateFlashcard($topic) {
-    return askMistral("Create a flashcard for the topic '$topic'. Format:
+    global $conn;
+
+    // Fetch feedback for the topic
+    $stmt = $conn->prepare("SELECT SUM(feedback = 'No') AS negative_feedback FROM ai_feedback WHERE topic = ?");
+    $stmt->bind_param("s", $topic);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $negative_feedback = $row['negative_feedback'] ?? 0;
+
+    // Adjust prompt based on feedback
+    $additionalInstructions = $negative_feedback > 0 ? "Make it more detailed and accurate." : "";
+    return askMistral("Create a flashcard for the topic '$topic'. $additionalInstructions Format:
     **Front:** <topic>
     **Back:** <definition>");
 }

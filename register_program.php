@@ -46,7 +46,7 @@ $result = $conn->query($sql);
         <p class="text-danger text-center">No programs available.</p>
     <?php } ?>
     <hr>
-    <a href="index.php"> <button class="btn btn-danger w-100"> Back </button> </a>
+    <a href="dashboard.php"> <button class="btn btn-danger w-100"> Back </button> </a>
 
 </body>
 </html>

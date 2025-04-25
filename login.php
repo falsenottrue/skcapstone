@@ -1,49 +1,69 @@
 <?php
 session_start();
 include 'connection.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+require 'PHPMailer/Exception.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') 
-{
+$showOtpModal = false;
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     $usernm = $_POST['usernm'];
     $passwrd = $_POST['passwrd'];
 
-    $stmt = $conn->prepare("SELECT login_id, role, passwrd FROM login WHERE usernm = ?");
+    $stmt = $conn->prepare("SELECT login_id, role, passwrd, email FROM login WHERE usernm = ?");
     $stmt->bind_param("s", $usernm);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($login_id, $role, $hashed_password);
+        $stmt->bind_result($login_id, $role, $hashed_password, $email);
         $stmt->fetch();
 
         if (password_verify($passwrd, $hashed_password)) {
+            $otp = rand(100000, 999999);
+            $_SESSION['otp'] = $otp;
+            $_SESSION['otp_expiry'] = time() + 300;
+            $_SESSION['email'] = $email;
             $_SESSION['login_id'] = $login_id;
             $_SESSION['role'] = $role;
 
-            $stmt = $conn->prepare("SELECT first_name FROM users WHERE user_id = ?");
-            $stmt->bind_param("i", $login_id);
-            $stmt->execute();
-            $stmt->bind_result($first_name);
-            $stmt->fetch();
-            $_SESSION['user_name'] = $first_name;
-            $stmt->close();
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'paulwilliamtrinidad@gmail.com';
+                $mail->Password = 'tfmn yupn dxtw fpow';
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
 
-            if ($role == 'admin') {
-                header("Location: admin_index.php");
-            } else {
-                header("Location: index.php");
+                $mail->setFrom('your@email.com', 'SK OTP');
+                $mail->addAddress($email);
+                $mail->isHTML(true);
+                $mail->Subject = 'Your OTP Code';
+                $mail->Body = "Your OTP code is <b>$otp</b>. It will expire in 5 minutes.";
+                $mail->send();
+
+                $showOtpModal = true;
+
+            } catch (Exception $e) {
+                echo "<script>alert('Could not send OTP. {$mail->ErrorInfo}');</script>";
             }
-            exit();
         } else {
-            echo "<script>alert('Invalid credentials! Please try again.'); window.location.href='login.php';</script>";
+            echo "<script>alert('Invalid credentials.');</script>";
         }
     } else {
-        echo "<script>alert('User not found! Please check your username and try again.'); window.location.href='login.php';</script>";
+        echo "<script>alert('User not found.');</script>";
     }
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,11 +74,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     <link rel="stylesheet" href="style/style2.css">
     <link rel="icon" type="image/png" href="img/sklogo.png">
     <title>SK | Login</title>
+    <style>
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1001;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        #otpInput {
+            font-size: 18px;
+            padding: 10px;
+            width: 80%;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+    </style>
 </head>
 <body>
+    <?php if ($showOtpModal): ?>
+    <div id="otpModal" class="modal" style="display:block;">
+        <div class="modal-content">
+            <h2>Enter OTP</h2>
+            <p>Check your email for the code</p>
+            <form id="otpForm">
+                <input type="text" name="otp" id="otpInput" maxlength="6" required>
+                <div class="modal-buttons">
+                    <button type="submit">Verify</button>
+                    <button type="button" onclick="resendOtp()">Resend OTP</button>
+                </div>
+                <p id="otpMessage" style="color:red; margin-top:10px;"></p>
+            </form>
+        </div>
+    </div>
+    <?php endif; ?>
+
+
     <div class="container">
         <div class="box form-box">
-            <header><img src="img/sklogo.png" alt="Logo" class="logo"><br>Login</br></header>
+            <header>
+                <a href="dashboard.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a>
+                <br>Login</br>
+            </header>
             <form action="" method="post">
                 
                 <div class="field input">
@@ -80,5 +174,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             </form>
         </div>
     </div>
+    <script>
+    document.getElementById("otpForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const otp = document.getElementById("otpInput").value;
+
+        fetch("verify_otp_ajax.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "otp=" + otp
+        })
+        .then(res => res.text())
+        .then(response => {
+            if (response.trim() === "success") {
+                window.location.href = "<?php echo ($_SESSION['role'] === 'admin') ? 'admin_dashboard.php' : 'dashboard.php'; ?>";
+            } else if (response.trim() === "invalid") {
+                document.getElementById("otpMessage").innerText = "Incorrect OTP.";
+            } else if (response.trim() === "expired") {
+                document.getElementById("otpMessage").innerText = "OTP expired. Please log in again.";
+            }
+        });
+    });
+
+    function resendOtp() {
+    fetch("resend_otp.php")
+        .then(res => res.text())
+        .then(response => {
+            if (response.trim() === "resent") {
+                document.getElementById("otpMessage").innerText = "New OTP sent!";
+            } else if (response.trim() === "session_expired") {
+                document.getElementById("otpMessage").innerText = "Session expired. Please login again.";
+            } else {
+                document.getElementById("otpMessage").innerText = "Failed to resend OTP.";
+            }
+        });
+    }
+    </script>
 </body>
 </html>

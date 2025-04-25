@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $age = date_diff(date_create($birth_date), date_create($today))->y;
 
     if ($age > 21) {
-        echo "<script>alert('Only users aged 21 or below can register.'); window.location.href = 'index.php';</script>";
+        echo "<script>alert('Only users aged 21 or below can register.'); window.location.href = 'dashboard.php';</script>";
         exit();
     }
 

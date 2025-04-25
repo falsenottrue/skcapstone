@@ -1,5 +1,6 @@
 <?php
 include 'connection.php';
+include 'session_timeout.php';
 session_start(); //access control
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -90,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p><a href="accomplishment_report.php"><img src="img/bebeko.jpg" width="500x" alt="Logo" class="logo"> <img src="img/bebeko2.jpg" width="500x" alt="Logo" class="logo"></a></p>
             <p><a><img src="img/librengprint.jpg" width="500x" alt="Logo" class="logo"> <img src="img/librelg.jpg" width="500x" alt="Logo" class="logo"></a></p>
             <p><a><img src="img/lib1.jpg" width="500x" alt="Logo" class="logo">          <img src="img/lib2.jpg" width="500x" alt="Logo" class="logo"></a></p>
-
             </div>
         </div>
 

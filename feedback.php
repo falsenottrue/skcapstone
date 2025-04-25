@@ -1,9 +1,10 @@
 <?php
 include 'connection.php';
+include 'session_timeout.php';
 session_start();
 
 if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'user') {
-    echo "<script>alert('You must be logged in as a user to submit feedback.'); window.location.href='index.php';</script>";
+    echo "<script>alert('You must be logged in as a user to submit feedback.'); window.location.href='dashboard.php';</script>";
     exit();
 }
 
@@ -72,6 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
         <hr>
     </form>
-        <a href="index.php"> <button class="btn btn-danger w-100"> Back </button> </a>
+        <a href="dashboard.php"> <button class="btn btn-danger w-100"> Back </button> </a>
 </body>
 </html>

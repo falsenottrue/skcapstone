@@ -1,5 +1,6 @@
 <?php
 include 'connection.php';
+include 'session_timeout.php';
 session_start();
 
 if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'admin') {
@@ -53,7 +54,7 @@ $result = $conn->query("
         </tbody>
     </table>
     <hr>
-    <a href="admin_index.php"> <button class="btn btn-danger w-100"> Back </button> </a>
+    <a href="admin_dashboard.php"> <button class="btn btn-danger w-100"> Back </button> </a>
 </body>
 </html>
 
