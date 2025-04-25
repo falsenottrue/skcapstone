@@ -4,7 +4,7 @@ include 'session_timeout.php';
 session_start();
 
 if (!isset($_SESSION['login_id'])) {
-    echo "<script>alert('You must be logged in to access this program.'); window.location.href='index.php';</script>";
+    echo "<script>alert('You must be logged in to access this program.'); window.location.href='dashboard.php';</script>";
     exit();
 }
 ?>

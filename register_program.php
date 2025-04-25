@@ -3,7 +3,7 @@ include 'connection.php';
 session_start();
 
 if (!isset($_SESSION['login_id'])) {
-    echo "<script>alert('You must be logged in to register for a program.'); window.location.href='login.php';</script>";
+    echo "<script>alert('You must be logged in to register for a program.'); window.location.href='dashboard.php';</script>";
     exit();
 }
 
