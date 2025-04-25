@@ -146,7 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     </div>
     <?php endif; ?>
 
-
     <div class="container">
         <div class="box form-box">
             <header>
