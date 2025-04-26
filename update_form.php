@@ -80,6 +80,8 @@ $conn->close();
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
+    <link rel="icon" type="image/png" href="img/sklogo.png">
+    
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css"
