@@ -1,4 +1,6 @@
 <?php
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 include 'connection.php';
 session_start(); //access control
 if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'admin') {
@@ -285,7 +287,7 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="admin_dashboard.php">
-                <i class="fas fa-chart-line"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M513.33-580v-260H840v260H513.33ZM120-446.67V-840h326.67v393.33H120ZM513.33-120v-393.33H840V-120H513.33ZM120-120v-260h326.67v260H120Zm66.67-393.33H380v-260H186.67v260ZM580-186.67h193.33v-260H580v260Zm0-460h193.33v-126.66H580v126.66Zm-393.33 460H380v-126.66H186.67v126.66ZM380-513.33Zm200-133.34Zm0 200ZM380-313.33Z"/></svg>
                 <span class="ml-3 item-text"> Dashboard</span>
               </a>
             </li>
@@ -303,7 +305,7 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="update_program.php">
-                <i class="fas fa-landmark fa"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M164.67-160v-66.67H288l-15.33-12.66q-60-49.34-86.34-109Q160-408 160-477.33q0-107.67 63.83-192.84 63.84-85.16 167.5-115.83v69.33q-74 28-119.33 93.84-45.33 65.83-45.33 145.5 0 57 21.33 102.16 21.33 45.17 60 79.84L331.33-278v-115.33H398V-160H164.67Zm404.66-13.33v-70q74.67-28 119.34-93.84 44.66-65.83 44.66-145.5 0-47-21.33-94.16-21.33-47.17-58.67-84.5L630.67-682v115.33H564V-800h233.33v66.67h-124l15.34 14q56.33 53.66 83.83 115.5Q800-542 800-482.67 800-375 736.5-289.5 673-204 569.33-173.33Z"/></svg>
                 <span class="ml-3 item-text">Update Programs</span>
               </a>
             </li>
@@ -311,58 +313,16 @@ $result = $conn->query($sql);
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="feedback_list.php">
-                <i class="fas fa-landmark fa"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-152.66h66.67v152.66h666.66v-506.66H146.67v154H80v-154q0-27 19.83-46.84Q119.67-800 146.67-800h666.66q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67Zm312.66-142L412-350l96.33-96H80v-66.67h428.33l-96.33-96 47.33-48 177.34 177.34L459.33-302Z"/></svg>
                 <span class="ml-3 item-text">Feedback List</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="update_form.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Update Information</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="register_program.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Program Registration</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="feedback.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Submit Feedback</span>
-              </a>
-            </li>
-          </ul>
-          <p class="text-muted-nav nav-heading mt-4 mb-1">
-            <span
-              style="
-                font-size: 10.5px;
-                font-weight: bold;
-                font-family: 'Inter', sans-serif;
-              "
-              >OTHER COMPONENTS</span
-            >
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 6</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 7</span>
+              <a class="nav-link" href="admin_event.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M448.67-280h66.66v-240h-66.66v240Zm31.32-316q15.01 0 25.18-9.97 10.16-9.96 10.16-24.7 0-15.3-10.15-25.65-10.16-10.35-25.17-10.35-15.01 0-25.18 10.35-10.16 10.35-10.16 25.65 0 14.74 10.15 24.7 10.16 9.97 25.17 9.97Zm.19 516q-82.83 0-155.67-31.5-72.84-31.5-127.18-85.83Q143-251.67 111.5-324.56T80-480.33q0-82.88 31.5-155.78Q143-709 197.33-763q54.34-54 127.23-85.5T480.33-880q82.88 0 155.78 31.5Q709-817 763-763t85.5 127Q880-563 880-480.18q0 82.83-31.5 155.67Q817-251.67 763-197.46q-54 54.21-127 85.84Q563-80 480.18-80Zm.15-66.67q139 0 236-97.33t97-236.33q0-139-96.87-236-96.88-97-236.46-97-138.67 0-236 96.87-97.33 96.88-97.33 236.46 0 138.67 97.33 236 97.33 97.33 236.33 97.33ZM480-480Z"/></svg>
+                <span class="ml-3 item-text">Announcement</span>
               </a>
             </li>
           </ul>

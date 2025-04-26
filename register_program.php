@@ -1,9 +1,11 @@
 <?php
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 include 'connection.php';
 session_start();
 
 if (!isset($_SESSION['login_id'])) {
-    echo "<script>alert('You must be logged in to register for a program.'); window.location.href='login.php';</script>";
+    echo "<script>alert('You must be logged in to register for a program.'); window.location.href='dashboard.php';</script>";
     exit();
 }
 

@@ -10,6 +10,14 @@ use PHPMailer\PHPMailer\Exception;
 
 $showOtpModal = false;
 
+function clearLoginSessionData() {
+    unset($_SESSION['otp']);
+    unset($_SESSION['otp_expiry']);
+    unset($_SESSION['email']);
+    unset($_SESSION['login_id']);
+    unset($_SESSION['role']);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     $usernm = $_POST['usernm'];
     $passwrd = $_POST['passwrd'];
@@ -51,12 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
                 $showOtpModal = true;
 
             } catch (Exception $e) {
+                clearLoginSessionData(); // <<< Clear residual data if email failed
                 echo "<script>alert('Could not send OTP. {$mail->ErrorInfo}');</script>";
             }
         } else {
+            clearLoginSessionData(); // <<< Clear residual data if wrong password
             echo "<script>alert('Invalid credentials.');</script>";
         }
     } else {
+        clearLoginSessionData(); // <<< Clear residual data if user not found
         echo "<script>alert('User not found.');</script>";
     }
 }
@@ -145,7 +156,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
         </div>
     </div>
     <?php endif; ?>
-
 
     <div class="container">
         <div class="box form-box">

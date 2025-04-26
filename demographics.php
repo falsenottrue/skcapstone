@@ -1,4 +1,6 @@
 <?php
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 include 'connection.php';
 
 session_start();
@@ -9,24 +11,26 @@ if (!isset($_SESSION['login_id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['login_id'];
-        $checkUserQuery = "SELECT user_id FROM users WHERE user_id = ?";
-        $checkStmt = $conn->prepare($checkUserQuery);
-        $checkStmt->bind_param("i", $user_id);
-        $checkStmt->execute();
-        $checkStmt->store_result();
 
-        if ($checkStmt->num_rows == 0) {
-            echo "<script>alert('Error: User does not exist in the database.'); window.location.href='index.php';</script>";
-            exit();
-        }
-        $checkStmt->close();
-        $youth_classification = $_POST['youth_classification'];
-        $specific_needs = $_POST['specific_needs'] ?? 'None';
-        $educational_background = $_POST['educational_background'];
-        $register_sk_voter = isset($_POST['register_sk_voter']) ? 1 : 0;
-        $vote_last_sk_election = isset($_POST['vote_last_sk_election']) ? 1 : 0;
-        $registered_national_voter = isset($_POST['registered_national_voter']) ? 1 : 0;
-        $attended_sk_assembly = isset($_POST['attended_sk_assembly']) ? 1 : 0;
+    $checkUserQuery = "SELECT user_id FROM users WHERE user_id = ?";
+    $checkStmt = $conn->prepare($checkUserQuery);
+    $checkStmt->bind_param("i", $user_id);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows == 0) {
+        echo "<script>alert('Error: User does not exist.'); window.location.href='index.php';</script>";
+        exit();
+    }
+    $checkStmt->close();
+
+    $youth_classification = $_POST['youth_classification'];
+    $specific_needs = $_POST['specific_needs'] ?? 'None';
+    $educational_background = $_POST['educational_background'];
+    $register_sk_voter = isset($_POST['register_sk_voter']) ? 1 : 0;
+    $vote_last_sk_election = isset($_POST['vote_last_sk_election']) ? 1 : 0;
+    $registered_national_voter = isset($_POST['registered_national_voter']) ? 1 : 0;
+    $attended_sk_assembly = isset($_POST['attended_sk_assembly']) ? 1 : 0;
 
     $sql = "INSERT INTO demographics (user_id, youth_classification, specific_needs, educational_background, register_sk_voter, vote_last_sk_election, registered_national_voter, attended_sk_assembly) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,13 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         echo "<script>alert('Demographics data submitted successfully!'); window.location.href='index.php';</script>";
     } else {
-        echo "<script>alert('Error submitting form. Please try again.');</script>";
+        // Delete user if demographics failed
+        $conn->query("DELETE FROM demographics WHERE user_id = $user_id");
+        $conn->query("DELETE FROM guardian_info WHERE user_id = $user_id");
+        $conn->query("DELETE FROM users WHERE user_id = $user_id");
+        $conn->query("DELETE FROM login WHERE login_id = $user_id");
+        session_destroy();
+        echo "<script>alert('Error submitting demographics. Your account was deleted. Please register again.'); window.location.href='register.php';</script>";
     }
 
     $stmt->close();
     $conn->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
