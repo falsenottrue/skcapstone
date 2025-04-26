@@ -5,10 +5,6 @@ session_start();
 include 'session_timeout.php';
 include 'connection.php';
 
-if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'user') {
-    header('Location: dashboard.php');
-    exit;
-}
 
 // Fetch all entries
 $result = $conn->query("SELECT * FROM announ ORDER BY created_at ASC");
