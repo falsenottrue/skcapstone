@@ -21,36 +21,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $age = date_diff(date_create($birth_date), date_create($today))->y;
 
     if ($age > 21) {
-        echo "<script>alert('Only users aged 21 or below can register.'); window.location.href = 'dashboard.php';</script>";
+        // Delete login record
+        $login_id = $_SESSION['login_id'];
+        $delete = $conn->prepare("DELETE FROM login WHERE login_id = ?");
+        $delete->bind_param("i", $login_id);
+        $delete->execute();
+        $delete->close();
+
+        session_destroy();
+        echo "<script>alert('Only users aged 21 or below can register. Your account has been deleted.'); window.location.href = 'register.php';</script>";
         exit();
     }
 
-    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, birth_date, gender, contact_number, address) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $first_name, $last_name, $birth_date, $gender, $contact_number, $address);
+    $stmt = $conn->prepare("INSERT INTO users (user_id, first_name, last_name, birth_date, gender, contact_number, address) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issssss", $_SESSION['login_id'], $first_name, $last_name, $birth_date, $gender, $contact_number, $address);
 
     if ($stmt->execute()) {
-        $login_id = $stmt->insert_id;
-
         if ($age < 18) {
             $guardian_name = $_POST['guardian_name'];
             $guardian_contact = $_POST['guardian_contact'];
             $relationship = $_POST['guardian_relationship'];
 
-            $stmt = $conn->prepare("INSERT INTO guardian_info (user_id, guardian_name, guardian_contact, relationship) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("isss", $login_id, $guardian_name, $guardian_contact, $relationship);
-            $stmt->execute();
+            $stmt2 = $conn->prepare("INSERT INTO guardian_info (user_id, guardian_name, guardian_contact, relationship) VALUES (?, ?, ?, ?)");
+            $stmt2->bind_param("isss", $_SESSION['login_id'], $guardian_name, $guardian_contact, $relationship);
+            if (!$stmt2->execute()) {
+                // If error adding guardian info, delete everything
+                $conn->query("DELETE FROM guardian_info WHERE user_id = " . $_SESSION['login_id']);
+                $conn->query("DELETE FROM users WHERE user_id = " . $_SESSION['login_id']);
+                $conn->query("DELETE FROM login WHERE login_id = " . $_SESSION['login_id']);
+                session_destroy();
+                echo "<script>alert('Error saving guardian info. Your registration was canceled. Please try again.'); window.location.href='register.php';</script>";
+                exit();
+            }
+            $stmt2->close();
         }
-
         echo "<script>alert('Registration successful!'); window.location.href = 'demographics.php';</script>";
     } else {
-        echo "Error: " . $stmt->error;
+        // If error inserting user
+        $conn->query("DELETE FROM users WHERE user_id = " . $_SESSION['login_id']);
+        $conn->query("DELETE FROM login WHERE login_id = " . $_SESSION['login_id']);
+        session_destroy();
+        echo "<script>alert('Error saving your information. Registration was canceled. Please try again.'); window.location.href='register.php';</script>";
+        exit();
     }
     
     $stmt->close();
     $conn->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
