@@ -1,10 +1,12 @@
 <?php
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 session_start();
 include 'session_timeout.php';
-include 'connection.php';  // gives you $conn (MySQLi)
+include 'connection.php';
 
-if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: index.php');
+if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'user') {
+    header('Location: dashboard.php');
     exit;
 }
 

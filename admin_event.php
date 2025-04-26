@@ -1,4 +1,6 @@
 <?php
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 include 'connection.php';
 include 'session_timeout.php';
 session_start();
@@ -61,8 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Data Entry Form</title>
+  <title>Event Data Form</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="icon" type="image/png" href="img/sklogo.png"/>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -146,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <button type="submit">Submit</button>
     </form>
+    <a href="admin_dashboard.php"><button class="btn btn-danger w-100">Back</button></a>
   </div>
 
   <!-- Success Modal -->
