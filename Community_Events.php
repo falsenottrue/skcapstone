@@ -145,6 +145,16 @@ session_start();
         </button>
 
         <ul class="nav">
+          <!-- <li class="nav-item">
+            <section
+              class="nav-link text-muted my-2 circle-icon"
+              href="#"
+              data-toggle="modal"
+              data-target=".modal-shortcut"
+            >
+              <span class="fe fe-message-circle fe-16"></span>
+            </section>
+          </li> -->
           <li class="nav-item nav-notif">
             <section
               class="nav-link text-muted my-2 circle-icon"
@@ -229,7 +239,7 @@ session_start();
         </a>
         <nav class="vertnav navbar-side navbar-light">
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="dashboard.php">
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="#">
               <i class="fas fa-landmark fa-3x"></i>
               <div class="brand-title">
                 <br />
@@ -240,7 +250,7 @@ session_start();
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="dashboard.php">
-                <i class="fas fa-chart-line"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M513.33-580v-260H840v260H513.33ZM120-446.67V-840h326.67v393.33H120ZM513.33-120v-393.33H840V-120H513.33ZM120-120v-260h326.67v260H120Zm66.67-393.33H380v-260H186.67v260ZM580-186.67h193.33v-260H580v260Zm0-460h193.33v-126.66H580v126.66Zm-393.33 460H380v-126.66H186.67v126.66ZM380-513.33Zm200-133.34Zm0 200ZM380-313.33Z"/></svg>
                 <span class="ml-3 item-text"> Dashboard</span>
               </a>
             </li>
@@ -257,16 +267,16 @@ session_start();
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="community_events.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Community Events</span>
+              <a class="nav-link" href="Community_Events.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/></svg>
+              <span class="ml-3 item-text">Community Events</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="event_announcement.php">
-                <i class="fas fa-landmark fa"></i>
+              <a class="nav-link" href="Event_Announcement.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
                 <span class="ml-3 item-text">Event Announcement</span>
               </a>
             </li>
@@ -274,15 +284,15 @@ session_start();
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="update_form.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Update Information</span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+              <span class="ml-3 item-text">Update Information</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="register_program.php">
-                <i class="fas fa-landmark fa"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M80-160v-112q0-33 17-62t47-44q51-26 115-44t141-18q30 0 58.5 3t55.5 9l-70 70q-11-2-21.5-2H400q-71 0-127.5 17T180-306q-9 5-14.5 14t-5.5 20v32h250l80 80H80Zm542 16L484-282l56-56 82 82 202-202 56 56-258 258ZM400-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm10 240Zm-10-320q33 0 56.5-23.5T480-640q0-33-23.5-56.5T400-720q-33 0-56.5 23.5T320-640q0 33 23.5 56.5T400-560Zm0-80Z"/></svg>
                 <span class="ml-3 item-text">Program Registration</span>
               </a>
             </li>
@@ -290,38 +300,11 @@ session_start();
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="feedback.php">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Submit Feedback</span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg>
+              <span class="ml-3 item-text">Submit Feedback</span>
               </a>
             </li>
           </ul>
-          <p class="text-muted-nav nav-heading mt-4 mb-1">
-            <span
-              style="
-                font-size: 10.5px;
-                font-weight: bold;
-                font-family: 'Inter', sans-serif;
-              "
-              >OTHER COMPONENTS</span
-            >
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 6</span>
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="#">
-                <i class="fas fa-landmark fa"></i>
-                <span class="ml-3 item-text">Module 7</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
       </aside>
 
       <main role="main" class="main-content">
@@ -396,7 +379,6 @@ session_start();
             </div>
           </div>
         </div>
-
     <!-- YOUR CONTENT HERE -->
     <div class="table-container">
         <table>
