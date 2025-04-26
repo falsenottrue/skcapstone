@@ -347,7 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
 
         <ul class="nav">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <section
               class="nav-link text-muted my-2 circle-icon"
               href="#"
@@ -356,7 +356,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             >
               <span class="fe fe-message-circle fe-16"></span>
             </section>
-          </li>
+          </li> -->
           <li class="nav-item nav-notif">
             <section
               class="nav-link text-muted my-2 circle-icon"
