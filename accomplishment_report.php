@@ -28,7 +28,6 @@ include 'session_timeout.php';
 
         <div class="right-links">
             <a href="dashboard.php"> Back </a>
-            <a href="logout.php"> <button class="btn"> Logout </button> </a>
         </div>
     </div>
 

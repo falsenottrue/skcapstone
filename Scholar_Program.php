@@ -25,7 +25,5 @@ include 'session_timeout.php';
 
         <div class="right-links">
             <a href="Community_Events.php"> Back </a>
-            <a href="logout.php"> <button class="btn"> Logout </button> </a>
-
         </div>
     </div>
