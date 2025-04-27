@@ -25,7 +25,6 @@ $result = $conn->query($sql);
     <link rel="icon" type="image/png" href="img/sklogo.png">
 </head>
 <body class="container mt-4">
-    <form action="dashboard.php" method="POST" class="mt-3">
     <h2 class="text-center">Program Registration</h2>
 
     <?php if ($result->num_rows > 0) { ?>

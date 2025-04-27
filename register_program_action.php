@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ii", $login_id, $program_id);
         
         if ($stmt->execute()) {
-            echo "<script>alert('Successfully registered for the program!'); window.location.href='index.php';</script>";
+            echo "<script>alert('Successfully registered for the program!'); window.location.href='register_program.php';</script>";
         } else {
             echo "<script>alert('Error registering for the program.');</script>";
         }
