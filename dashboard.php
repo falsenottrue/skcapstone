@@ -425,12 +425,16 @@ include 'session_timeout.php';
             </a>
           </p>
           <p>
+            <a href="https://www.facebook.com/SKNagkaisangNayon/posts/pfbid05jET2Y7rESHWzsnhxLsYfD6JMbBW9iKmRvAjE6d3Bur5zM1rzeYJYxZtnYxM9Xo3l">
             <img src="img/librengprint.jpg" width="500" alt="Logo" class="logo">
             <img src="img/librelg.jpg" width="500" alt="Logo" class="logo">
+            </a>
           </p>
           <p>
+            <a href="https://www.facebook.com/SKNagkaisangNayon/posts/pfbid05jET2Y7rESHWzsnhxLsYfD6JMbBW9iKmRvAjE6d3Bur5zM1rzeYJYxZtnYxM9Xo3l">
             <img src="img/lib1.jpg" width="500" alt="Logo" class="logo">
             <img src="img/lib2.jpg" width="500" alt="Logo" class="logo">
+            </a>
           </p>
         </div>
       </div>

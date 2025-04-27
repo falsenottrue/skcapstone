@@ -400,7 +400,7 @@ session_start();
                     </td>
                     <td>
                         <h2>
-                        <p><strong><a href="sport_event.php">Sport Event</a></strong></p>
+                        <p><strong><a href="sport_event.php">Sports Events</a></strong></p>
                         </h2>   
                     </td>
                     <td>A community-wide event promoting physical fitness, teamwork, and sportsmanship through organized games and competitions.</td>
@@ -430,7 +430,7 @@ session_start();
                     </td>
                     <td>
                         <h2>    
-                        <p><strong><a href="Scholar_Program.php">Scholar Program</a></strong></p>
+                        <p><strong><a href="Scholar_Program.php">Scholarship Program</a></strong></p>
                         </h2>
                     </td>
                     <td>Provides financial and academic support to deserving students to help them pursue their educational goals.</td>
