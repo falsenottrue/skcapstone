@@ -2,7 +2,39 @@
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
 session_start();
+include 'connection.php';
 include 'session_timeout.php'; 
+
+$data = $conn->query("SELECT center, amount FROM budget_allocation");
+
+$labels = [];
+$amounts = [];
+
+while ($row = $data->fetch_assoc()) {
+    $labels[] = $row['center'];
+    $amounts[] = $row['amount'];
+}
+
+// Initialize variables
+$youthCount = $eventCount = $activeProgramCount = 0;
+
+// SQL: Count users under 18, total events, and active programs
+$sql = "
+    SELECT 
+        (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
+        (SELECT COUNT(*) FROM announ) AS event_count,
+        (SELECT COUNT(*) FROM programs WHERE status = 'active') AS active_program_count
+";
+
+$result = $conn->query($sql);
+
+if ($result && $row = $result->fetch_assoc()) {
+    $minorCount = $row['minor_count'];
+    $eventCount = $row['event_count'];
+    $activeProgramCount = $row['active_program_count'];
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -398,7 +430,7 @@ include 'session_timeout.php';
         </div>
 
         <!-- YOUR CONTENT HERE -->
-         <!-- Session Timeout Modal -->
+        <!-- Session Timeout Modal -->
         <div id="sessionModal" class="modal fade" tabindex="-1" role="dialog">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content text-center">
@@ -416,6 +448,65 @@ include 'session_timeout.php';
           </div>
         </div>
 
+      <div class="container-fluid">
+        <div class="row mb-3">
+          <!-- Summary Cards -->
+          <div class="col-md-4">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Registered Youth</h5>
+                <h3>Youths under 18: <?php echo $minorCount; ?></h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Upcoming Events</h5>
+                <h3>Total Events: <?php echo $eventCount; ?></h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Active Programs</h5>
+                <h3>Active Programs: <?php echo $activeProgramCount; ?></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts & Activity -->
+        <div class="row">
+          <!-- Sample Chart Placeholder -->
+          <div class="col-md-8">
+            <div class="card shadow">
+              <div class="card-header">
+                Budgeting Plan
+              </div>
+              <div class="card-body">
+                <canvas id="budgetChart"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          
+          <!-- Recent Announcements -->
+          <div class="col-md-4">
+            <div class="card shadow">
+              <div class="card-header">
+                Recent Announcements
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Clean-Up Drive this Saturday</li>
+                <li class="list-group-item">Youth Assembly - May 15</li>
+                <li class="list-group-item">Scholarship Deadline – May 5</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
         <div class="center-wrapper">
         <div class="box">
           <p>
@@ -425,13 +516,13 @@ include 'session_timeout.php';
             </a>
           </p>
           <p>
-            <a href="https://www.facebook.com/SKNagkaisangNayon/posts/pfbid05jET2Y7rESHWzsnhxLsYfD6JMbBW9iKmRvAjE6d3Bur5zM1rzeYJYxZtnYxM9Xo3l">
+            <a href="https://www.facebook.com/share/p/1BhBxeTwdL">
             <img src="img/librengprint.jpg" width="500" alt="Logo" class="logo">
             <img src="img/librelg.jpg" width="500" alt="Logo" class="logo">
             </a>
           </p>
           <p>
-            <a href="https://www.facebook.com/SKNagkaisangNayon/posts/pfbid05jET2Y7rESHWzsnhxLsYfD6JMbBW9iKmRvAjE6d3Bur5zM1rzeYJYxZtnYxM9Xo3l">
+            <a href="https://www.facebook.com/share/p/1BhBxeTwdL">
             <img src="img/lib1.jpg" width="500" alt="Logo" class="logo">
             <img src="img/lib2.jpg" width="500" alt="Logo" class="logo">
             </a>
@@ -439,8 +530,9 @@ include 'session_timeout.php';
         </div>
       </div>
 
-      </main>
+      </div>
     </div>
+    </main>
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -473,6 +565,52 @@ include 'session_timeout.php';
     <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const budgetLabels = <?= json_encode($labels) ?>;
+const budgetData = <?= json_encode($amounts) ?>;
+
+const ctx = document.getElementById('budgetChart').getContext('2d');
+
+const budgetChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: budgetLabels,
+    datasets: [{
+      label: 'Allocated Budget (₱)',
+      data: budgetData,
+      backgroundColor: '#4CAF50',
+      borderColor: '#388E3C',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `₱${parseFloat(context.raw).toLocaleString()}`;
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: value => `₱${value.toLocaleString()}`
+        }
+      }
+    }
+  }
+});
+</script>
 
     <script>
   // Apply saved dark mode on page load
