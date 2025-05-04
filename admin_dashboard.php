@@ -21,9 +21,41 @@ $sql = "SELECT
     occupation,
     created_at
 FROM users";
-
+$sql2 = "SELECT * FROM budget_allocation";
 $result = $conn->query($sql);
+$result2 = $conn->query($sql2);
+// Initialize variables
+$youthCount = $eventCount = $activeProgramCount = 0;
+
+// SQL: Count users under 18, total events, and active programs
+$sql3 = "
+    SELECT 
+        (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
+        (SELECT COUNT(*) FROM announ) AS event_count,
+        (SELECT COUNT(*) FROM programs WHERE status = 'active') AS active_program_count
+";
+
+$result3 = $conn->query($sql3);
+
+if ($result3 && $row = $result3->fetch_assoc()) {
+    $minorCount = $row['minor_count'];
+    $eventCount = $row['event_count'];
+    $activeProgramCount = $row['active_program_count'];
+}
+
+
+$programs = [];
+$sql4 = "SELECT program_name, description FROM programs WHERE status = 'Active'";
+$resultPrograms = $conn->query($sql4);
+
+if ($resultPrograms && $resultPrograms->num_rows > 0) {
+    while ($row = $resultPrograms->fetch_assoc()) {
+        $programs[] = $row;
+    }
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +76,7 @@ $result = $conn->query($sql);
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/simplebar.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Overpass:wght@100;400;600;900&display=swap"
@@ -58,7 +90,20 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="css/main.css" /> <!-- wag mo'to tanggalin or palitan  add ka nalang ng css file -->
 
     <style>
-     
+      
+      /* Remove number input arrows (Chrome, Safari, Edge, Opera) */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Remove number input arrows (Firefox) */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      
       .sidebar-left {
         background-color: #191d67; /* Set the sidebar color in light mode */
       }
@@ -402,52 +447,300 @@ $result = $conn->query($sql);
           </div>
         </div>
 
-        <!-- YOUR CONTENT HERE -->
-        <div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Registered Users</h4>
-        </div>
-        <div class="card-body">
-            <?php if ($result->num_rows > 0): ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Birth Date</th>
-                                <th>Age</th>
-                                <th>Contact</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Occupation</th>
-                                <th>Registered On</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
-                                <td><?= htmlspecialchars($row['gender']) ?></td>
-                                <td><?= htmlspecialchars($row['birth_date']) ?></td>
-                                <td><?= htmlspecialchars($row['age']) ?></td>
-                                <td><?= htmlspecialchars($row['contact_number']) ?></td>
-                                <td><?= htmlspecialchars($row['address']) ?></td>
-                                <td><?= htmlspecialchars($row['status']) ?></td>
-                                <td><?= htmlspecialchars($row['occupation']) ?></td>
-                                <td><?= htmlspecialchars(date('F j, Y', strtotime($row['created_at']))) ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                        </tbody>
-                    </table>
+        <!-- SUMMARY CARDS -->
+        <div class="container mt-4">
+          <div class="row mb-3">
+            <!-- Registered Youth Card -->
+            <div class="col-md-4">
+              <div class="card shadow" data-bs-toggle="modal" data-bs-target="#youthModal" style="cursor: pointer;">
+                <div class="card-body">
+                  <h5 class="card-title">Registered Youth</h5>
+                  <h3>Youths under 18: <?php echo $minorCount; ?></h3>
                 </div>
-            <?php else: ?>
-                <p class="text-muted">No users found.</p>
-            <?php endif; ?>
+              </div>
+            </div>
+            
+            <!-- Upcoming Events -->
+            <div class="col-md-4">
+              <div class="card shadow" data-bs-toggle="modal" data-bs-target="#eventsModal" style="cursor:pointer;">
+                <div class="card-body">
+                  <h5 class="card-title">Upcoming Events</h5>
+                  <h3>Total Events: <?php echo $eventCount; ?></h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Programs -->
+            <div class="col-md-4">
+              <div class="card shadow" data-bs-toggle="modal" data-bs-target="#programsModal" style="cursor:pointer;">
+                <div class="card-body">
+                  <h5 class="card-title">Active Programs</h5>
+                  <h3>Active Programs: <?php echo $activeProgramCount; ?></h3>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-</div>
+        
+        <!-- Modal for Youth List -->
+        <div class="modal fade" id="youthModal" tabindex="-1" aria-labelledby="youthModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="youthModalLabel">Registered Youth (Under 18)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <?php
+                // Query to get users under 18
+                $today = date('Y-m-d');
+                $minorQuery = "SELECT * FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18";
+                $minorResult = $conn->query($minorQuery);
+                ?>
+
+                <?php if ($minorResult && $minorResult->num_rows > 0): ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Name</th>
+                          <th>Gender</th>
+                          <th>Birth Date</th>
+                          <th>Age</th>
+                          <th>Contact</th>
+                          <th>Address</th>
+                          <th>Status</th>
+                          <th>Occupation</th>
+                          <th>Registered On</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php while ($minor = $minorResult->fetch_assoc()): ?>
+                        <tr>
+                          <td><?= htmlspecialchars($minor['first_name'] . ' ' . $minor['last_name']) ?></td>
+                          <td><?= htmlspecialchars($minor['gender']) ?></td>
+                          <td><?= htmlspecialchars($minor['birth_date']) ?></td>
+                          <td><?= date_diff(date_create($minor['birth_date']), date_create())->y ?></td>
+                          <td><?= htmlspecialchars($minor['contact_number']) ?></td>
+                          <td><?= htmlspecialchars($minor['address']) ?></td>
+                          <td><?= htmlspecialchars($minor['status']) ?></td>
+                          <td><?= htmlspecialchars($minor['occupation']) ?></td>
+                          <td><?= htmlspecialchars(date('F j, Y', strtotime($minor['created_at']))) ?></td>
+                        </tr>
+                      <?php endwhile; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                <?php else: ?>
+                  <p class="text-muted">No youth records found.</p>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal for Upcoming Events -->
+        <div class="modal fade" id="eventsModal" tabindex="-1" aria-labelledby="eventsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="eventsModalLabel">Upcoming Events</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <?php
+                // Query to get upcoming events (assuming announcements are future events)
+                $eventQuery = "SELECT * FROM announ ORDER BY created_at DESC";
+                $eventResult = $conn->query($eventQuery);
+                ?>
+
+                <?php if ($eventResult && $eventResult->num_rows > 0): ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Image</th>
+                          <th>Message</th>
+                          <th>Link</th>
+                          <th>Document</th>
+                          <th>Created At</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php while ($event = $eventResult->fetch_assoc()): ?>
+                          <tr>
+                            <td>
+                              <?php if (!empty($event['image_path'])): ?>
+                                <img src="<?= htmlspecialchars($event['image_path']) ?>" alt="Event Image" style="max-width: 100px;">
+                              <?php else: ?>
+                                <span class="text-muted">No Image</span>
+                              <?php endif; ?>
+                            </td>
+                            <td><?= nl2br(htmlspecialchars($event['message'])) ?></td>
+                            <td>
+                              <?php if (!empty($event['link'])): ?>
+                                <a href="<?= htmlspecialchars($event['link']) ?>" target="_blank">View Link</a>
+                              <?php else: ?>
+                                <span class="text-muted">No Link</span>
+                              <?php endif; ?>
+                            </td>
+                            <td>
+                              <?php if (!empty($event['doc_path'])): ?>
+                                <a href="<?= htmlspecialchars($event['doc_path']) ?>" target="_blank">Download Document</a>
+                              <?php else: ?>
+                                <span class="text-muted">No Document</span>
+                              <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars(date('F j, Y, g:i a', strtotime($event['created_at']))) ?></td>
+                          </tr>
+                        <?php endwhile; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                <?php else: ?>
+                  <p class="text-muted">No upcoming events found.</p>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal for Active Programs -->
+        <div class="modal fade" id="programsModal" tabindex="-1" aria-labelledby="programsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="programsModalLabel">Active Programs</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <?php
+                // Query to get active programs
+                $programQuery = "SELECT * FROM programs WHERE status = 'Active'";
+                $programResult = $conn->query($programQuery);
+                ?>
+
+                <?php if ($programResult && $programResult->num_rows > 0): ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Program Name</th>
+                          <th>Description</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php while ($program = $programResult->fetch_assoc()): ?>
+                          <tr>
+                            <td><?= htmlspecialchars($program['program_name']) ?></td>
+                            <td><?= nl2br(htmlspecialchars($program['description'])) ?></td>
+                            <td><?= htmlspecialchars(date('F j, Y', strtotime($program['start_date']))) ?></td>
+                            <td><?= htmlspecialchars(date('F j, Y', strtotime($program['end_date']))) ?></td>
+                          </tr>
+                        <?php endwhile; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                <?php else: ?>
+                  <p class="text-muted">No active programs found.</p>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
+              
+        <!-- YOUR CONTENT HERE --> 
+        <div class="container mt-1">
+          <div class="card shadow">
+            <div class="card-header">Manage Budget Allocation</div>
+            <div class="card-body">
+              <table class="table table-bordered text-center" id="budgetTable">
+                <thead>
+                  <tr>
+                    <th>Center</th>
+                    <th>Amount</th>
+                    <th>Details</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php while ($row = $result2->fetch_assoc()): ?>
+                    <tr data-id="<?= $row['id'] ?>">
+                      <td><input class="form-control center-input" value="<?= htmlspecialchars($row['center']) ?>"></td>
+                      <td><input type="number" class="form-control amount-input" value="<?= $row['amount'] ?>"></td>
+                      <td><textarea class="form-control details-input"><?= htmlspecialchars($row['details']) ?></textarea></td>
+                      <td>
+                        <button class="btn btn-success btn-sm save-btn">Save</button>
+                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                      </td>
+                    </tr>
+                  <?php endwhile; ?>
+                  <div class="mb-2 text-end">
+                    <button id="save-all-btn" class="btn btn-success">Save All Changes</button>
+                  </div>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td><input id="new-center" class="form-control" placeholder="New Center"></td>
+                    <td><input id="new-amount" type="number" class="form-control" placeholder="Amount"></td>
+                    <td><textarea id="new-details" class="form-control" placeholder="Details"></textarea></td>
+                    <td><button id="add-btn" class="btn btn-primary btn-sm">Add</button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="container mt-5">
+          <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">Registered Users</h4>
+            </div>
+            <div class="card-body">
+              <?php if ($result->num_rows > 0): ?>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Birth Date</th>
+                        <th>Age</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Occupation</th>
+                        <th>Registered On</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                          <td><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
+                          <td><?= htmlspecialchars($row['gender']) ?></td>
+                          <td><?= htmlspecialchars($row['birth_date']) ?></td>
+                          <td><?= htmlspecialchars($row['age']) ?></td>
+                          <td><?= htmlspecialchars($row['contact_number']) ?></td>
+                          <td><?= htmlspecialchars($row['address']) ?></td>
+                          <td><?= htmlspecialchars($row['status']) ?></td>
+                          <td><?= htmlspecialchars($row['occupation']) ?></td>
+                          <td><?= htmlspecialchars(date('F j, Y', strtotime($row['created_at']))) ?></td>
+                        </tr>
+                      <?php endwhile; ?>
+                    </tbody>
+                  </table>
+                </div>
+              <?php else: ?>
+                <p class="text-muted">No users found.</p>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
+
     </main>
  <!-- Include jQuery -->
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -480,6 +773,88 @@ $result = $conn->query($sql);
     <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+    // Save All
+    document.getElementById('save-all-btn').addEventListener('click', function () {
+      const rows = document.querySelectorAll('tbody tr[data-id]');
+      const updates = [];
+
+      rows.forEach(row => {
+        const id = row.dataset.id;
+        const center = row.querySelector('.center-input').value;
+        const amount = row.querySelector('.amount-input').value;
+        const details = row.querySelector('.details-input').value;
+
+        updates.push({ id, center, amount, details });
+      });
+
+      fetch('update_multiple_budget_rows.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("All changes saved!");
+        } else {
+          alert("Error saving: " + data.error);
+        }
+      });
+    });
+
+      // Add new row
+      document.getElementById('add-btn').addEventListener('click', function () {
+        const center = document.getElementById('new-center').value;
+        const amount = document.getElementById('new-amount').value;
+        const details = document.getElementById('new-details').value;
+
+        if (!center || !amount) {
+          alert('Center and amount are required!');
+          return;
+        }
+
+        fetch('add_budget_row.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ center, amount, details })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            location.reload(); // Refresh to see new row
+          } else {
+            alert('Add failed: ' + data.error);
+          }
+        });
+      });
+
+      // Delete with confirmation modal
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const row = this.closest('tr');
+          const id = row.dataset.id;
+
+          if (!confirm('Are you sure you want to delete this budget entry?')) return;
+
+          fetch('delete_budget_row.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              row.remove();
+            } else {
+              alert('Delete failed: ' + data.error);
+            }
+          });
+        });
+      });
+      </script>
+
 
     <script>
   // Apply saved dark mode on page load
