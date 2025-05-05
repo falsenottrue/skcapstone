@@ -487,10 +487,50 @@ $conn->close();
               </div>
               <div class="card-body">
                 <canvas id="budgetChart"></canvas>
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#budgetDetailsModal">
+                  View Budget Breakdown
+                </button>
               </div>
             </div>
           </div>
-          
+
+          <!-- Budget Details Modal -->
+          <div class="modal fade" id="budgetDetailsModal" tabindex="-1" aria-labelledby="budgetDetailsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title" id="budgetDetailsLabel">Budget Allocation Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Center</th>
+                          <th>Annual Amount</th>
+                          <th>Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        require 'connection.php';
+                        $budgetQuery = $conn->query("SELECT center, amount, details FROM budget_allocation");
+                        while ($row = $budgetQuery->fetch_assoc()):
+                        ?>
+                          <tr>
+                            <td><?= htmlspecialchars($row['center']) ?></td>
+                            <td>₱<?= number_format($row['amount'], 2) ?></td>
+                            <td><?= htmlspecialchars($row['details']) ?></td>
+                          </tr>
+                        <?php endwhile; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
           <!-- Recent Announcements -->
           <div class="col-md-4">
@@ -506,6 +546,8 @@ $conn->close();
             </div>
           </div>
         </div>
+
+      <hr>
         
         <div class="center-wrapper">
         <div class="box">
