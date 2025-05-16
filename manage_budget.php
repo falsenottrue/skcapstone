@@ -1,9 +1,57 @@
 <?php
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params(86400);
-session_start();
 include 'connection.php';
-include 'session_timeout.php'; 
+session_start(); //access control
+if (!isset($_SESSION['login_id']) || $_SESSION['role'] !== 'admin') {
+    echo "<script>alert('Access denied. Admins only.'); window.location.href='dashboard.php';</script>";
+    exit();
+}
+
+$sql = "SELECT 
+    user_id,
+    first_name,
+    last_name,
+    gender,
+    birth_date,
+    TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age,
+    contact_number,
+    address,
+    status,
+    occupation,
+    created_at
+FROM users";
+$sql2 = "SELECT * FROM budget_allocation";
+$result = $conn->query($sql);
+$result2 = $conn->query($sql2);
+
+$youthCount = $eventCount = $activeProgramCount = 0;
+
+$sql3 = "
+    SELECT 
+        (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
+        (SELECT COUNT(*) FROM announ) AS event_count,
+        (SELECT COUNT(*) FROM programs WHERE status = 'active') AS active_program_count
+";
+
+$result3 = $conn->query($sql3);
+
+if ($result3 && $row = $result3->fetch_assoc()) {
+    $minorCount = $row['minor_count'];
+    $eventCount = $row['event_count'];
+    $activeProgramCount = $row['active_program_count'];
+}
+
+
+$programs = [];
+$sql4 = "SELECT program_name, description FROM programs WHERE status = 'Active'";
+$resultPrograms = $conn->query($sql4);
+
+if ($resultPrograms && $resultPrograms->num_rows > 0) {
+    while ($row = $resultPrograms->fetch_assoc()) {
+        $programs[] = $row;
+    }
+}
 
 $data = $conn->query("SELECT center, amount FROM budget_allocation");
 
@@ -14,26 +62,9 @@ while ($row = $data->fetch_assoc()) {
     $labels[] = $row['center'];
     $amounts[] = $row['amount'];
 }
-
-$youthCount = $eventCount = $activeProgramCount = 0;
-
-$sql = "
-    SELECT 
-        (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
-        (SELECT COUNT(*) FROM announ) AS event_count,
-        (SELECT COUNT(*) FROM programs WHERE status = 'active') AS active_program_count
-";
-
-$result = $conn->query($sql);
-
-if ($result && $row = $result->fetch_assoc()) {
-    $minorCount = $row['minor_count'];
-    $eventCount = $row['event_count'];
-    $activeProgramCount = $row['active_program_count'];
-}
-
-$conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +85,7 @@ $conn->close();
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/simplebar.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Overpass:wght@100;400;600;900&display=swap"
@@ -68,7 +99,18 @@ $conn->close();
     <link rel="stylesheet" href="css/main.css" /> <!-- wag mo'to tanggalin or palitan  add ka nalang ng css file -->
 
     <style>
-     
+      
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      
       .sidebar-left {
         background-color: #191d67;
       }
@@ -192,16 +234,6 @@ $conn->close();
         </button>
 
         <ul class="nav">
-          <!-- <li class="nav-item">
-            <section
-              class="nav-link text-muted my-2 circle-icon"
-              href="#"
-              data-toggle="modal"
-              data-target=".modal-shortcut"
-            >
-              <span class="fe fe-message-circle fe-16"></span>
-            </section>
-          </li> -->
           <li class="nav-item nav-notif">
             <section
               class="nav-link text-muted my-2 circle-icon"
@@ -286,7 +318,7 @@ $conn->close();
         </a>
         <nav class="vertnav navbar-side navbar-light">
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="#">
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="admin_dashboard.php">
               <i class="fas fa-landmark fa-3x"></i>
               <div class="brand-title">
                 <br />
@@ -296,7 +328,7 @@ $conn->close();
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
-              <a class="nav-link" href="dashboard.php">
+              <a class="nav-link" href="admin_dashboard.php">
               <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M513.33-580v-260H840v260H513.33ZM120-446.67V-840h326.67v393.33H120ZM513.33-120v-393.33H840V-120H513.33ZM120-120v-260h326.67v260H120Zm66.67-393.33H380v-260H186.67v260ZM580-186.67h193.33v-260H580v260Zm0-460h193.33v-126.66H580v126.66Zm-393.33 460H380v-126.66H186.67v126.66ZM380-513.33Zm200-133.34Zm0 200ZM380-313.33Z"/></svg>
                 <span class="ml-3 item-text"> Dashboard</span>
               </a>
@@ -314,44 +346,37 @@ $conn->close();
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="Community_Events.php">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/></svg>
-              <span class="ml-3 item-text">Community Events</span>
+              <a class="nav-link" href="update_program.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M164.67-160v-66.67H288l-15.33-12.66q-60-49.34-86.34-109Q160-408 160-477.33q0-107.67 63.83-192.84 63.84-85.16 167.5-115.83v69.33q-74 28-119.33 93.84-45.33 65.83-45.33 145.5 0 57 21.33 102.16 21.33 45.17 60 79.84L331.33-278v-115.33H398V-160H164.67Zm404.66-13.33v-70q74.67-28 119.34-93.84 44.66-65.83 44.66-145.5 0-47-21.33-94.16-21.33-47.17-58.67-84.5L630.67-682v115.33H564V-800h233.33v66.67h-124l15.34 14q56.33 53.66 83.83 115.5Q800-542 800-482.67 800-375 736.5-289.5 673-204 569.33-173.33Z"/></svg>
+                <span class="ml-3 item-text">Update Programs</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="Event_Announcement.php">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-                <span class="ml-3 item-text">Event Announcement</span>
+              <a class="nav-link" href="feedback_list.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-152.66h66.67v152.66h666.66v-506.66H146.67v154H80v-154q0-27 19.83-46.84Q119.67-800 146.67-800h666.66q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67Zm312.66-142L412-350l96.33-96H80v-66.67h428.33l-96.33-96 47.33-48 177.34 177.34L459.33-302Z"/></svg>
+                <span class="ml-3 item-text">Feedback List</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="update_form.php">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-              <span class="ml-3 item-text">Update Information</span>
+              <a class="nav-link" href="admin_event.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M448.67-280h66.66v-240h-66.66v240Zm31.32-316q15.01 0 25.18-9.97 10.16-9.96 10.16-24.7 0-15.3-10.15-25.65-10.16-10.35-25.17-10.35-15.01 0-25.18 10.35-10.16 10.35-10.16 25.65 0 14.74 10.15 24.7 10.16 9.97 25.17 9.97Zm.19 516q-82.83 0-155.67-31.5-72.84-31.5-127.18-85.83Q143-251.67 111.5-324.56T80-480.33q0-82.88 31.5-155.78Q143-709 197.33-763q54.34-54 127.23-85.5T480.33-880q82.88 0 155.78 31.5Q709-817 763-763t85.5 127Q880-563 880-480.18q0 82.83-31.5 155.67Q817-251.67 763-197.46q-54 54.21-127 85.84Q563-80 480.18-80Zm.15-66.67q139 0 236-97.33t97-236.33q0-139-96.87-236-96.88-97-236.46-97-138.67 0-236 96.87-97.33 96.88-97.33 236.46 0 138.67 97.33 236 97.33 97.33 236.33 97.33ZM480-480Z"/></svg>
+                <span class="ml-3 item-text">Announcement</span>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="register_program.php">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M80-160v-112q0-33 17-62t47-44q51-26 115-44t141-18q30 0 58.5 3t55.5 9l-70 70q-11-2-21.5-2H400q-71 0-127.5 17T180-306q-9 5-14.5 14t-5.5 20v32h250l80 80H80Zm542 16L484-282l56-56 82 82 202-202 56 56-258 258ZM400-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm10 240Zm-10-320q33 0 56.5-23.5T480-640q0-33-23.5-56.5T400-720q-33 0-56.5 23.5T320-640q0 33 23.5 56.5T400-560Zm0-80Z"/></svg>
-                <span class="ml-3 item-text">Program Registration</span>
+              <a class="nav-link" href="manage_budget.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M446.67-200.67h66.66v-40h53.34q14.16 0 23.75-9.58Q600-259.83 600-274v-126.67q0-14.16-9.58-23.75-9.59-9.58-23.75-9.58h-140v-60H600v-66.67h-86.67v-40h-66.66v40h-53.34q-14.16 0-23.75 9.59-9.58 9.58-9.58 23.75v126.66q0 14.17 9.58 23.75 9.59 9.59 23.75 9.59h140v60H360v66.66h86.67v40ZM226.67-80q-27 0-46.84-19.83Q160-119.67 160-146.67v-666.66q0-27 19.83-46.84Q199.67-880 226.67-880H574l226 226v507.33q0 27-19.83 46.84Q760.33-80 733.33-80H226.67Zm300.66-574v-159.33H226.67v666.66h506.66V-654h-206ZM226.67-813.33V-654v-159.33 666.66-666.66Z"/></svg>
+                <span class="ml-3 item-text">Announcement</span>
               </a>
             </li>
           </ul>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-              <a class="nav-link" href="feedback.php">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg>
-              <span class="ml-3 item-text">Submit Feedback</span>
-              </a>
-            </li>
-          </ul>
+        </nav>
       </aside>
 
       <main role="main" class="main-content">
@@ -426,144 +451,52 @@ $conn->close();
             </div>
           </div>
         </div>
-
-        <!-- YOUR CONTENT HERE -->
-        <!-- Session Timeout Modal -->
-        <div id="sessionModal" class="modal fade" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content text-center">
-              <div class="modal-header">
-                <h5 class="modal-title w-100">Session Timeout</h5>
-              </div>
-              <div class="modal-body">
-                <p>You've been inactive for a while.<br> Do you want to extend your session?</p>
-              </div>
-              <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-primary" id="extendBtn">Yes, keep me signed in</button>
-                <button type="button" class="btn btn-danger" id="logoutBtn">No, log me out</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <div class="container-fluid">
-        <div class="row mb-3">
-          <!-- Summary Cards -->
-          <div class="col-md-4">
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title">Registered Youth</h5>
-                <h3>Youths under 18: <?php echo $minorCount; ?></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title">Upcoming Events</h5>
-                <h3>Total Events: <?php echo $eventCount; ?></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title">Active Programs</h5>
-                <h3>Active Programs: <?php echo $activeProgramCount; ?></h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Charts & Activity -->
-        <div class="row">
-          <!-- Sample Chart Placeholder -->
-          <div class="col-md-8">
-            <div class="card shadow">
-              <div class="card-header">
-                Budgeting Plan
-              </div>
-              <div class="card-body">
-                <canvas id="budgetChart"></canvas>
-                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#budgetDetailsModal">
-                  View Budget Breakdown
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Budget Details Modal -->
-          <div class="modal fade" id="budgetDetailsModal" tabindex="-1" aria-labelledby="budgetDetailsLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                  <h5 class="modal-title" id="budgetDetailsLabel">Budget Allocation Details</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
-                      <thead class="table-dark">
-                        <tr>
-                          <th>Center</th>
-                          <th>Annual Amount</th>
-                          <th>Details</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        require 'connection.php';
-                        $budgetQuery = $conn->query("SELECT center, amount, details FROM budget_allocation");
-                        while ($row = $budgetQuery->fetch_assoc()):
-                        ?>
-                          <tr>
-                            <td><?= htmlspecialchars($row['center']) ?></td>
-                            <td>₱<?= number_format($row['amount'], 2) ?></td>
-                            <td><?= htmlspecialchars($row['details']) ?></td>
-                          </tr>
-                        <?php endwhile; ?>
-                      </tbody>
-                    </table>
+             
+        <!-- YOUR CONTENT HERE --> 
+        <div class="container mt-1">
+          <div class="card shadow">
+            <div class="card-header">Manage Budget Allocation</div>
+            <div class="card-body">
+              <table class="table table-bordered text-center" id="budgetTable">
+                <thead>
+                  <tr>
+                    <th>Center</th>
+                    <th>Amount</th>
+                    <th>Details</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php while ($row = $result2->fetch_assoc()): ?>
+                    <tr data-id="<?= $row['id'] ?>">
+                      <td><input class="form-control center-input" value="<?= htmlspecialchars($row['center']) ?>"></td>
+                      <td><input type="number" class="form-control amount-input" value="<?= $row['amount'] ?>"></td>
+                      <td><textarea class="form-control details-input"><?= htmlspecialchars($row['details']) ?></textarea></td>
+                      <td>
+                        <button class="btn btn-success btn-sm save-btn">Save</button>
+                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                      </td>
+                    </tr>
+                  <?php endwhile; ?>
+                  <div class="mb-2 text-end">
+                    <button id="save-all-btn" class="btn btn-success">Save All Changes</button>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Recent Announcements -->
-          <div class="col-md-4">
-            <div class="card shadow">
-              <div class="card-header">
-                Recent Announcements
-              </div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Clean-Up Drive this Saturday</li>
-                <li class="list-group-item">Youth Assembly - May 15</li>
-                <li class="list-group-item">Scholarship Deadline – May 5</li>
-              </ul>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td><input id="new-center" class="form-control" placeholder="New Center"></td>
+                    <td><input id="new-amount" type="number" class="form-control" placeholder="Amount"></td>
+                    <td><textarea id="new-details" class="form-control" placeholder="Details"></textarea></td>
+                    <td><button id="add-btn" class="btn btn-primary btn-sm">Add</button></td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
         </div>
-
-      <hr>
-        
-        <div class="center-wrapper">
-        <div class="box">
-          <p>
-            <a href="accomplishment_report.php">
-              <img src="img/accomp.jpg" width="500" alt="Logo" class="logo">
-              <img src="img/accomp2.jpg" width="500" alt="Logo" class="logo">
-            </a>
-          </p>
-        </div>
-      </div>
-
-      </div>
-    </div>
     </main>
-
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <!-- Include jQuery -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/moment.min.js"></script>
@@ -641,49 +574,86 @@ $conn->close();
     </script>
 
     <script>
-    let lastEventTime = localStorage.getItem('lastEventTime') || null;
+    // Save All
+    document.getElementById('save-all-btn').addEventListener('click', function () {
+      const rows = document.querySelectorAll('tbody tr[data-id]');
+      const updates = [];
 
-    function checkForNewEvents() {
-        fetch('../check_new_events.php')
-            .then(response => response.json())
-            .then(data => {
-                const latestEventTime = data.latest;
-                if (!latestEventTime) return;
+      rows.forEach(row => {
+        const id = row.dataset.id;
+        const center = row.querySelector('.center-input').value;
+        const amount = row.querySelector('.amount-input').value;
+        const details = row.querySelector('.details-input').value;
 
-                if (!lastEventTime || new Date(latestEventTime) > new Date(lastEventTime)) {
-                    lastEventTime = latestEventTime;
-                    localStorage.setItem('lastEventTime', latestEventTime);
-                    showNotificationModal("📢 New Event Added!");
-                }
-            })
-            .catch(err => console.error('Error checking events:', err));
-    }
+        updates.push({ id, center, amount, details });
+      });
 
-    function showNotificationModal(message) {
-        const notif = document.getElementById("notification");
-        notif.querySelector("strong").textContent = message;
-        notif.style.display = "block";
-
-        document.getElementById("no-notifications").style.display = "none";
-        $('.modal-notif').modal('show');
-    }
-
-    function removeNotification() {
-        document.getElementById("notification").style.display = "none";
-    }
-
-    function clearAllNotifications() {
-        localStorage.removeItem('lastEventTime');
-        removeNotification();
-        document.getElementById("no-notifications").style.display = "block";
-    }
-
-    // Start polling every 30 seconds
-    setInterval(checkForNewEvents, 30000); // 30 seconds
-    window.addEventListener('DOMContentLoaded', () => {
-        checkForNewEvents(); // Initial check
+      fetch('update_multiple_budget_rows.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("All changes saved!");
+        } else {
+          alert("Error saving: " + data.error);
+        }
+      });
     });
-    </script>
+
+      // Add new row
+      document.getElementById('add-btn').addEventListener('click', function () {
+        const center = document.getElementById('new-center').value;
+        const amount = document.getElementById('new-amount').value;
+        const details = document.getElementById('new-details').value;
+
+        if (!center || !amount) {
+          alert('Center and amount are required!');
+          return;
+        }
+
+        fetch('add_budget_row.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ center, amount, details })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            location.reload(); // Refresh to see new row
+          } else {
+            alert('Add failed: ' + data.error);
+          }
+        });
+      });
+
+      // Delete with confirmation modal
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const row = this.closest('tr');
+          const id = row.dataset.id;
+
+          if (!confirm('Are you sure you want to delete this budget entry?')) return;
+
+          fetch('delete_budget_row.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              row.remove();
+            } else {
+              alert('Delete failed: ' + data.error);
+            }
+          });
+        });
+      });
+      </script>
+
 
     <script>
   // Apply saved dark mode on page load

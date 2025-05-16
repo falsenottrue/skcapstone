@@ -24,10 +24,8 @@ FROM users";
 $sql2 = "SELECT * FROM budget_allocation";
 $result = $conn->query($sql);
 $result2 = $conn->query($sql2);
-// Initialize variables
 $youthCount = $eventCount = $activeProgramCount = 0;
 
-// SQL: Count users under 18, total events, and active programs
 $sql3 = "
     SELECT 
         (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
@@ -52,6 +50,16 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
     while ($row = $resultPrograms->fetch_assoc()) {
         $programs[] = $row;
     }
+}
+
+$data = $conn->query("SELECT center, amount FROM budget_allocation");
+
+$labels = [];
+$amounts = [];
+
+while ($row = $data->fetch_assoc()) {
+    $labels[] = $row['center'];
+    $amounts[] = $row['amount'];
 }
 ?>
 
@@ -89,23 +97,25 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
     <link rel="stylesheet" href="css/feather.css" />
     <link rel="stylesheet" href="css/main.css" /> <!-- wag mo'to tanggalin or palitan  add ka nalang ng css file -->
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+
     <style>
-      
-      /* Remove number input arrows (Chrome, Safari, Edge, Opera) */
+
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
       }
 
-      /* Remove number input arrows (Firefox) */
       input[type="number"] {
         -moz-appearance: textfield;
       }
 
       
       .sidebar-left {
-        background-color: #191d67; /* Set the sidebar color in light mode */
+        background-color: #191d67;
       }
       
       .center-wrapper {
@@ -208,7 +218,6 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
         color: #c82333; /* Darker red text on hover */
       }
 
-      /* Optional: Add a transition effect */
       .dropdown-item,
       .dropdown-log-out {
         transition: background-color 0.2s ease, color 0.2s ease;
@@ -227,16 +236,6 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
         </button>
 
         <ul class="nav">
-          <!-- <li class="nav-item">
-            <section
-              class="nav-link text-muted my-2 circle-icon"
-              href="#"
-              data-toggle="modal"
-              data-target=".modal-shortcut"
-            >
-              <span class="fe fe-message-circle fe-16"></span>
-            </section>
-          </li> -->
           <li class="nav-item nav-notif">
             <section
               class="nav-link text-muted my-2 circle-icon"
@@ -290,9 +289,9 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="navbarDropdownMenuLink"
             >
-              <a class="dropdown-item" href="profile.php"
-                ><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a
-              >
+              <a class="dropdown-item" href="admin_register.php">
+                <i class="fe fe-user-plus"></i>&nbsp;&nbsp;&nbsp;Register Admin
+              </a>
               <?php if (isset($_SESSION['login_id'])): ?>
               <a class="dropdown-log-out" href="logout.php">
                 <i class="fe fe-log-out"></i>&nbsp;&nbsp;&nbsp;Log Out
@@ -368,6 +367,14 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
               <a class="nav-link" href="admin_event.php">
               <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M448.67-280h66.66v-240h-66.66v240Zm31.32-316q15.01 0 25.18-9.97 10.16-9.96 10.16-24.7 0-15.3-10.15-25.65-10.16-10.35-25.17-10.35-15.01 0-25.18 10.35-10.16 10.35-10.16 25.65 0 14.74 10.15 24.7 10.16 9.97 25.17 9.97Zm.19 516q-82.83 0-155.67-31.5-72.84-31.5-127.18-85.83Q143-251.67 111.5-324.56T80-480.33q0-82.88 31.5-155.78Q143-709 197.33-763q54.34-54 127.23-85.5T480.33-880q82.88 0 155.78 31.5Q709-817 763-763t85.5 127Q880-563 880-480.18q0 82.83-31.5 155.67Q817-251.67 763-197.46q-54 54.21-127 85.84Q563-80 480.18-80Zm.15-66.67q139 0 236-97.33t97-236.33q0-139-96.87-236-96.88-97-236.46-97-138.67 0-236 96.87-97.33 96.88-97.33 236.46 0 138.67 97.33 236 97.33 97.33 236.33 97.33ZM480-480Z"/></svg>
                 <span class="ml-3 item-text">Announcement</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+              <a class="nav-link" href="manage_budget.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M446.67-200.67h66.66v-40h53.34q14.16 0 23.75-9.58Q600-259.83 600-274v-126.67q0-14.16-9.58-23.75-9.59-9.58-23.75-9.58h-140v-60H600v-66.67h-86.67v-40h-66.66v40h-53.34q-14.16 0-23.75 9.59-9.58 9.58-9.58 23.75v126.66q0 14.17 9.58 23.75 9.59 9.59 23.75 9.59h140v60H360v66.66h86.67v40ZM226.67-80q-27 0-46.84-19.83Q160-119.67 160-146.67v-666.66q0-27 19.83-46.84Q199.67-880 226.67-880H574l226 226v507.33q0 27-19.83 46.84Q760.33-80 733.33-80H226.67Zm300.66-574v-159.33H226.67v666.66h506.66V-654h-206ZM226.67-813.33V-654v-159.33 666.66-666.66Z"/></svg>
+                <span class="ml-3 item-text">Manage Budget</span>
               </a>
             </li>
           </ul>
@@ -492,7 +499,6 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
               </div>
               <div class="modal-body">
                 <?php
-                // Query to get users under 18
                 $today = date('Y-m-d');
                 $minorQuery = "SELECT * FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18";
                 $minorResult = $conn->query($minorQuery);
@@ -500,7 +506,7 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
 
                 <?php if ($minorResult && $minorResult->num_rows > 0): ?>
                   <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table id="youthTable" class="table table-bordered table-striped">
                       <thead class="table-dark">
                         <tr>
                           <th>Name</th>
@@ -556,7 +562,7 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
 
                 <?php if ($eventResult && $eventResult->num_rows > 0): ?>
                   <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table id="eventsTable" class="table table-bordered table-striped">
                       <thead class="table-dark">
                         <tr>
                           <th>Image</th>
@@ -615,14 +621,13 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
               </div>
               <div class="modal-body">
                 <?php
-                // Query to get active programs
                 $programQuery = "SELECT * FROM programs WHERE status = 'Active'";
                 $programResult = $conn->query($programQuery);
                 ?>
 
                 <?php if ($programResult && $programResult->num_rows > 0): ?>
                   <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table id="programsTable" class="table table-bordered table-striped">
                       <thead class="table-dark">
                         <tr>
                           <th>Program Name</th>
@@ -651,50 +656,62 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
           </div>
         </div>
 
-              
-        <!-- YOUR CONTENT HERE --> 
+        <!-- Charts & Budget -->
         <div class="container mt-1">
-          <div class="card shadow">
-            <div class="card-header">Manage Budget Allocation</div>
-            <div class="card-body">
-              <table class="table table-bordered text-center" id="budgetTable">
-                <thead>
-                  <tr>
-                    <th>Center</th>
-                    <th>Amount</th>
-                    <th>Details</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php while ($row = $result2->fetch_assoc()): ?>
-                    <tr data-id="<?= $row['id'] ?>">
-                      <td><input class="form-control center-input" value="<?= htmlspecialchars($row['center']) ?>"></td>
-                      <td><input type="number" class="form-control amount-input" value="<?= $row['amount'] ?>"></td>
-                      <td><textarea class="form-control details-input"><?= htmlspecialchars($row['details']) ?></textarea></td>
-                      <td>
-                        <button class="btn btn-success btn-sm save-btn">Save</button>
-                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                      </td>
-                    </tr>
-                  <?php endwhile; ?>
-                  <div class="mb-2 text-end">
-                    <button id="save-all-btn" class="btn btn-success">Save All Changes</button>
+          <!-- Budget Chart -->
+          <div class="col-md-8">
+            <div class="card shadow">
+              <div class="card-header">Budgeting Plan</div>
+              <div class="card-body">
+                <canvas id="budgetChart"></canvas>
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#budgetDetailsModal">
+                  View Budget Breakdown
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Details Modal -->
+          <div class="modal fade" id="budgetDetailsModal" tabindex="-1" aria-labelledby="budgetDetailsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title" id="budgetDetailsLabel">Budget Allocation Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="table-responsive">
+                    <table id="budgetTable" class="table table-bordered table-hover align-middle display nowrap" style="width:100%">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Center</th>
+                          <th>Annual Amount</th>
+                          <th>Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        require 'connection.php';
+                        $budgetQuery = $conn->query("SELECT center, amount, details FROM budget_allocation");
+                        while ($row = $budgetQuery->fetch_assoc()):
+                        ?>
+                        <tr>
+                          <td><?= htmlspecialchars($row['center']) ?></td>
+                          <td>₱<?= number_format($row['amount'], 2) ?></td>
+                          <td><?= htmlspecialchars($row['details']) ?></td>
+                        </tr>
+                        <?php endwhile; ?>
+                      </tbody>
+                    </table>
                   </div>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td><input id="new-center" class="form-control" placeholder="New Center"></td>
-                    <td><input id="new-amount" type="number" class="form-control" placeholder="Amount"></td>
-                    <td><textarea id="new-details" class="form-control" placeholder="Details"></textarea></td>
-                    <td><button id="add-btn" class="btn btn-primary btn-sm">Add</button></td>
-                  </tr>
-                </tfoot>
-              </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
+              
+        <!-- YOUR CONTENT HERE --> 
         <div class="container mt-5">
           <div class="card shadow">
             <div class="card-header bg-primary text-white">
@@ -703,7 +720,7 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
             <div class="card-body">
               <?php if ($result->num_rows > 0): ?>
                 <div class="table-responsive">
-                  <table class="table table-bordered table-striped table-hover align-middle">
+                  <table id="registeredUsersTable" class="table table-bordered table-striped table-hover align-middle display nowrap" style="width:100%">
                     <thead class="table-dark">
                       <tr>
                         <th>Name</th>
@@ -742,8 +759,8 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
         </div>
 
     </main>
- <!-- Include jQuery -->
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/moment.min.js"></script>
@@ -773,145 +790,169 @@ if ($resultPrograms && $resultPrograms->num_rows > 0) {
     <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-    // Save All
-    document.getElementById('save-all-btn').addEventListener('click', function () {
-      const rows = document.querySelectorAll('tbody tr[data-id]');
-      const updates = [];
+    const budgetLabels = <?= json_encode($labels) ?>;
+    const budgetData = <?= json_encode($amounts) ?>;
 
-      rows.forEach(row => {
-        const id = row.dataset.id;
-        const center = row.querySelector('.center-input').value;
-        const amount = row.querySelector('.amount-input').value;
-        const details = row.querySelector('.details-input').value;
+    const ctx = document.getElementById('budgetChart').getContext('2d');
 
-        updates.push({ id, center, amount, details });
-      });
-
-      fetch('update_multiple_budget_rows.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ updates })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert("All changes saved!");
-        } else {
-          alert("Error saving: " + data.error);
-        }
-      });
-    });
-
-      // Add new row
-      document.getElementById('add-btn').addEventListener('click', function () {
-        const center = document.getElementById('new-center').value;
-        const amount = document.getElementById('new-amount').value;
-        const details = document.getElementById('new-details').value;
-
-        if (!center || !amount) {
-          alert('Center and amount are required!');
-          return;
-        }
-
-        fetch('add_budget_row.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ center, amount, details })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            location.reload(); // Refresh to see new row
-          } else {
-            alert('Add failed: ' + data.error);
+    const budgetChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: budgetLabels,
+        datasets: [{
+          label: 'Allocated Budget (₱)',
+          data: budgetData,
+          backgroundColor: '#4CAF50',
+          borderColor: '#388E3C',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `₱${parseFloat(context.raw).toLocaleString()}`;
+              }
+            }
           }
-        });
-      });
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: value => `₱${value.toLocaleString()}`
+            }
+          }
+        }
+      }
+    });
+    </script>
 
-      // Delete with confirmation modal
-      document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function () {
-          const row = this.closest('tr');
-          const id = row.dataset.id;
+      <script>
+        $(document).ready(function () {
+          const tablesToInit = [
+            { id: '#budgetTable', title: 'Budget Allocation' },
+            { id: '#youthTable', title: 'Youth Users' },
+            { id: '#eventsTable', title: 'Upcoming Events' },
+            { id: '#programsTable', title: 'Registered Programs' },
+            { id: '#registeredUsersTable', title: 'Registered Users' }
+          ];
 
-          if (!confirm('Are you sure you want to delete this budget entry?')) return;
+          const today = new Date();
+          const dateStr = `${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}-${today.getFullYear()}`;
 
-          fetch('delete_budget_row.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              row.remove();
-            } else {
-              alert('Delete failed: ' + data.error);
+          tablesToInit.forEach(tableInfo => {
+            if ($(tableInfo.id).length) {
+              $(tableInfo.id).DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                  { extend: 'copyHtml5', text: 'Copy', title: `${tableInfo.title} (${dateStr})` },
+                  { extend: 'csvHtml5', text: 'CSV', title: `${tableInfo.title} (${dateStr})` },
+                  { extend: 'excelHtml5', text: 'Excel', title: `${tableInfo.title} (${dateStr})` },
+                  {extend: 'pdfHtml5', text: 'PDF', title: `${tableInfo.title} (${dateStr})` },
+                  { extend: 'print', text: 'Print', title: `${tableInfo.title} (${dateStr})` }
+                ],
+                initComplete: function () {
+                  this.api().columns().every(function () {
+                    var column = this;
+                    var input = $('<input type="text" class="form-control form-control-sm mb-1" placeholder="Search" />')
+                      .appendTo($(column.footer()).empty())
+                      .on('keyup change', function () {
+                        column.search($(this).val()).draw();
+                      });
+                  });
+                }
+              });
             }
           });
+
+          // Adjust column sizing when modals open
+          $('#youthModal').on('shown.bs.modal', function () {
+            $('#youthTable').DataTable().columns.adjust().draw();
+          });
+          $('#eventsModal').on('shown.bs.modal', function () {
+            $('#eventsTable').DataTable().columns.adjust().draw();
+          });
+          $('#programsModal').on('shown.bs.modal', function () {
+            $('#programsTable').DataTable().columns.adjust().draw();
+          });
         });
-      });
-      </script>
+        </script>
 
 
     <script>
-  // Apply saved dark mode on page load
-  window.addEventListener("DOMContentLoaded", function () {
-    if (localStorage.getItem("darkMode") === "enabled") {
-      document.body.classList.add("dark");
-      document.querySelector(".navbar-light").classList.add("dark");
-      document.querySelector(".sidebar-left").classList.add("dark");
-    }
-  });
-
-  // Toggle dark mode and save preference
-  document
-    .getElementById("darkModeToggle")
-    .addEventListener("click", function () {
-      document.body.classList.toggle("dark");
-      document.querySelector(".navbar-light").classList.toggle("dark");
-      document.querySelector(".sidebar-left").classList.toggle("dark");
-
-      const isDarkMode = document.body.classList.contains("dark");
-      localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
+    // Apply saved dark mode on page load
+    window.addEventListener("DOMContentLoaded", function () {
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark");
+        document.querySelector(".navbar-light").classList.add("dark");
+        document.querySelector(".sidebar-left").classList.add("dark");
+      }
     });
-        let idleTime = 0;
-      const idleLimit = 10 * 60; // 10 minutes in seconds
-      const warningLimit = 9 * 60; // Show modal at 9 minutes
 
-      function resetIdleTimer() {
-        idleTime = 0;
-      }
+    // Toggle dark mode and save preference
+    document
+      .getElementById("darkModeToggle")
+      .addEventListener("click", function () {
+        document.body.classList.toggle("dark");
+        document.querySelector(".navbar-light").classList.toggle("dark");
+        document.querySelector(".sidebar-left").classList.toggle("dark");
 
-      function extendSession() {
-        $('#sessionModal').modal('hide');
-        resetIdleTimer();
-        $.get('extend_session.php'); // Optional: touch the session server-side
-      }
-
-      function logout() {
-        window.location.href = 'logout.php';
-      }
-
-      // Reset timer on any user interaction
-      ['mousemove', 'keydown', 'click', 'scroll'].forEach(evt => {
-        document.addEventListener(evt, resetIdleTimer, false);
+        const isDarkMode = document.body.classList.contains("dark");
+        localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
       });
+          let idleTime = 0;
+        const idleLimit = 10 * 60; // 10 minutes in seconds
+        const warningLimit = 9 * 60; // Show modal at 9 minutes
 
-      setInterval(() => {
-        idleTime++;
-        if (idleTime === warningLimit) {
-          $('#sessionModal').modal('show');
-        } else if (idleTime >= idleLimit) {
-          logout();
+        function resetIdleTimer() {
+          idleTime = 0;
         }
-      }, 1000); // check every second
 
-      // Button click handlers
-      $('#extendBtn').on('click', extendSession);
-      $('#logoutBtn').on('click', logout);
-    </script>
+        function extendSession() {
+          $('#sessionModal').modal('hide');
+          resetIdleTimer();
+          $.get('extend_session.php'); // Optional: touch the session server-side
+        }
+
+        function logout() {
+          window.location.href = 'logout.php';
+        }
+
+        // Reset timer on any user interaction
+        ['mousemove', 'keydown', 'click', 'scroll'].forEach(evt => {
+          document.addEventListener(evt, resetIdleTimer, false);
+        });
+
+        setInterval(() => {
+          idleTime++;
+          if (idleTime === warningLimit) {
+            $('#sessionModal').modal('show');
+          } else if (idleTime >= idleLimit) {
+            logout();
+          }
+        }, 1000); // check every second
+
+        // Button click handlers
+        $('#extendBtn').on('click', extendSession);
+        $('#logoutBtn').on('click', logout);
+      </script>
   </body>
 </html>

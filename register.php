@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Already a member? <a href="login.php">Sign In</a>
                 </div>
             </form> 
+            <a href="dashboard.php"> <button class="btn btn-danger"> Back </button> </a>
         </div>
     </div>
 </body>

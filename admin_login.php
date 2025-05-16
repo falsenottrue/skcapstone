@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     $usernm = $_POST['usernm'];
     $passwrd = $_POST['passwrd'];
 
-    $stmt = $conn->prepare("SELECT login_id, role, passwrd, email FROM login WHERE usernm = ?");
+    $stmt = $conn->prepare("SELECT login_id, role, passwrd, email FROM login WHERE usernm = ? AND role = 'admin'");
     $stmt->bind_param("s", $usernm);
     $stmt->execute();
     $stmt->store_result();
@@ -57,18 +57,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
                 $mail->send();
 
                 $showOtpModal = true;
-
             } catch (Exception $e) {
-                clearLoginSessionData(); // <<< Clear residual data if email failed
+                clearLoginSessionData();
                 echo "<script>alert('Could not send OTP. {$mail->ErrorInfo}');</script>";
             }
         } else {
-            clearLoginSessionData(); // <<< Clear residual data if wrong password
+            clearLoginSessionData();
             echo "<script>alert('Invalid credentials.');</script>";
         }
     } else {
-        clearLoginSessionData(); // <<< Clear residual data if user not found
-        echo "<script>alert('User not found.');</script>";
+        clearLoginSessionData();
+        echo "<script>alert('Admin user not found.');</script>";
     }
 }
 ?>
@@ -81,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/style2.css">
     <link rel="icon" type="image/png" href="img/sklogo.png">
-    <title>SK | Login</title>
+    <title>SK | Admin Login</title>
     <style>
         .modal {
             display: none; 
@@ -137,86 +136,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
     </style>
 </head>
 <body>
-    <?php if ($showOtpModal): ?>
-    <div id="otpModal" class="modal" style="display:block;">
-        <div class="modal-content">
-            <h2>Enter OTP</h2>
-            <p>Check your email for the code</p>
-            <form id="otpForm">
-                <input type="text" name="otp" id="otpInput" maxlength="6" required>
-                <div class="modal-buttons">
-                    <button type="submit">Verify</button>
-                    <button type="button" onclick="resendOtp()">Resend OTP</button>
-                </div>
-                <p id="otpMessage" style="color:red; margin-top:10px;"></p>
-            </form>
-        </div>
+<?php if ($showOtpModal): ?>
+<div id="otpModal" class="modal" style="display:block;">
+    <div class="modal-content">
+        <h2>Enter OTP</h2>
+        <p>Check your email for the code</p>
+        <form id="otpForm">
+            <input type="text" name="otp" id="otpInput" maxlength="6" required>
+            <div class="modal-buttons">
+                <button type="submit">Verify</button>
+                <button type="button" onclick="resendOtp()">Resend OTP</button>
+            </div>
+            <p id="otpMessage" style="color:red; margin-top:10px;"></p>
+        </form>
     </div>
-    <?php endif; ?>
+</div>
+<?php endif; ?>
 
-    <div class="container">
-        <div class="box form-box">
-            <header>
-                <a href="dashboard.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a>
-                <br>Login</br>
-            </header>
-            <form action="" method="post">
-                
-                <div class="field input">
-                    <label for="username">Username</label>
-                    <input type="text" name="usernm" id="username" autocomplete="off" required>
-                </div>
+<div class="container">
+    <div class="box form-box">
+        <header>
+            <a href="admin_dashboard.php"><img src="img/sklogo.png" alt="Logo" class="logo"></a>
+            <br>Admin Login</br>
+        </header>
+        <form action="" method="post">
+            <div class="field input">
+                <label for="username">Username</label>
+                <input type="text" name="usernm" id="username" autocomplete="off" required>
+            </div>
 
-                <div class="field input">
-                    <label for="password">Password</label>
-                    <input type="password" name="passwrd" id="password" autocomplete="off" required>
-                </div>
+            <div class="field input">
+                <label for="password">Password</label>
+                <input type="password" name="passwrd" id="password" autocomplete="off" required>
+            </div>
 
-                <div class="field">
-                    <input type="submit" class="btn" name="submit" value="Login" required>
-                </div>
-                <div class="links">
-                    Don't have account? <a href="register.php">Sign Up Now</a>
-                </div>
-            </form>
-            <a href="dashboard.php"> <button class="btn btn-danger"> Back </button> </a>
-        </div>
+            <div class="field">
+                <input type="submit" class="btn" name="submit" value="Login" required>
+            </div>
+            <div class="links">
+                Don't have account? <a href="admin_register.php">Sign Up Now</a>
+            </div>
+        </form>
     </div>
-    <script>
-    document.getElementById("otpForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const otp = document.getElementById("otpInput").value;
+</div>
 
-        fetch("verify_otp_ajax.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "otp=" + otp
-        })
-        .then(res => res.text())
-        .then(response => {
-            if (response.trim() === "success") {
-                window.location.href = "<?php echo ($_SESSION['role'] === 'admin') ? 'admin_dashboard.php' : 'dashboard.php'; ?>";
-            } else if (response.trim() === "invalid") {
-                document.getElementById("otpMessage").innerText = "Incorrect OTP.";
-            } else if (response.trim() === "expired") {
-                document.getElementById("otpMessage").innerText = "OTP expired. Please log in again.";
-            }
-        });
+<script>
+document.getElementById("otpForm")?.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const otp = document.getElementById("otpInput").value;
+
+    fetch("verify_otp_ajax.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "otp=" + otp
+    })
+    .then(res => res.text())
+    .then(response => {
+        if (response.trim() === "success") {
+            window.location.href = "admin_dashboard.php";
+        } else if (response.trim() === "invalid") {
+            document.getElementById("otpMessage").innerText = "Incorrect OTP.";
+        } else if (response.trim() === "expired") {
+            document.getElementById("otpMessage").innerText = "OTP expired. Please log in again.";
+        }
     });
+});
 
-    function resendOtp() {
+function resendOtp() {
     fetch("resend_otp.php")
         .then(res => res.text())
         .then(response => {
             if (response.trim() === "resent") {
-                document.getElementById("otpMessage").innerText = "New OTP sent!";
-            } else if (response.trim() === "session_expired") {
-                document.getElementById("otpMessage").innerText = "Session expired. Please login again.";
+                alert("OTP resent to your email.");
             } else {
-                document.getElementById("otpMessage").innerText = "Failed to resend OTP.";
+                alert("Failed to resend OTP.");
             }
         });
-    }
-    </script>
+}
+</script>
 </body>
 </html>
