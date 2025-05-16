@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkStmt->store_result();
 
     if ($checkStmt->num_rows == 0) {
-        echo "<script>alert('Error: User does not exist.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Error: User does not exist.'); window.location.href='dashboard.php';</script>";
         exit();
     }
     $checkStmt->close();
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("isssiiii", $user_id, $youth_classification, $specific_needs, $educational_background, $register_sk_voter, $vote_last_sk_election, $registered_national_voter, $attended_sk_assembly);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Demographics data submitted successfully!'); window.location.href='index.php';</script>";
+        echo "<script>alert('Demographics data submitted successfully!'); window.location.href='dashboard.php';</script>";
     } else {
         // Delete user if demographics failed
         $conn->query("DELETE FROM demographics WHERE user_id = $user_id");
