@@ -73,9 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
 }
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,6 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['usernm'])) {
                     Don't have account? <a href="register.php">Sign Up Now</a>
                 </div>
             </form>
+            <a href="dashboard.php"> <button class="btn btn-danger"> Back </button> </a>
         </div>
     </div>
     <script>
