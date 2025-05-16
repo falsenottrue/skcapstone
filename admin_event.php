@@ -8,7 +8,6 @@ session_start();
 if (isset($_POST['action']) && $_POST['action'] === 'delete_announcement') {
   $delete_id = (int)$_POST['id'];
 
-  // Fetch paths to delete files
   $stmt = $conn->prepare("SELECT image_path, doc_path FROM announ WHERE id = ?");
   $stmt->bind_param("i", $delete_id);
   $stmt->execute();
@@ -24,7 +23,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'delete_announcement') {
       unlink(__DIR__ . '/' . $docPath);
   }
 
-  // Delete the announcement
   $stmt = $conn->prepare("DELETE FROM announ WHERE id = ?");
   $stmt->bind_param("i", $delete_id);
   if ($stmt->execute()) {
@@ -47,7 +45,6 @@ $entry_saved = false;
 if (isset($_GET['delete_id'])) {
   $delete_id = (int)$_GET['delete_id'];
 
-  // Get the file paths first
   $stmt = $conn->prepare("SELECT image_path, doc_path FROM announ WHERE id = ?");
   $stmt->bind_param("i", $delete_id);
   $stmt->execute();
@@ -55,17 +52,14 @@ if (isset($_GET['delete_id'])) {
   $stmt->fetch();
   $stmt->close();
 
-  // Delete the image file
   if (!empty($imagePath) && file_exists(__DIR__ . '/' . $imagePath)) {
       unlink(__DIR__ . '/' . $imagePath);
   }
 
-  // Delete the document file
   if (!empty($docPath) && file_exists(__DIR__ . '/' . $docPath)) {
       unlink(__DIR__ . '/' . $docPath);
   }
 
-  // Now delete from database
   $stmt = $conn->prepare("DELETE FROM announ WHERE id = ?");
   $stmt->bind_param("i", $delete_id);
 
@@ -82,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $created_at = date('Y-m-d H:i:s');
     $updated_at = $created_at;
 
-    // Handle required image upload
     if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         die('Error: Image upload is required.');
     }
@@ -93,10 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     move_uploaded_file($_FILES['image']['tmp_name'], $imgPath);
     $imgRelPath = 'uploads/images/' . $imgFile;
 
-    // Optional link
     $link = !empty($_POST['link']) ? $conn->real_escape_string($_POST['link']) : null;
 
-    // Optional document/PDF/text
     $docRelPath = null;
     if (!empty($_FILES['document']['name'])) {
         $docDir = __DIR__ . '/uploads/docs/';
@@ -107,11 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $docRelPath = 'uploads/docs/' . $docFile;
     }
 
-    // Optional message
     $message = trim($_POST['message'] ?? '');
     $message = !empty($message) ? $conn->real_escape_string($message) : null;
 
-    // Insert into DB
     $stmt = $conn->prepare("INSERT INTO announ (image_path, link, doc_path, message, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $imgRelPath, $link, $docRelPath, $message, $created_at, $updated_at);
 
