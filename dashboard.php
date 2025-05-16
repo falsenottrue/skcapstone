@@ -15,10 +15,8 @@ while ($row = $data->fetch_assoc()) {
     $amounts[] = $row['amount'];
 }
 
-// Initialize variables
 $youthCount = $eventCount = $activeProgramCount = 0;
 
-// SQL: Count users under 18, total events, and active programs
 $sql = "
     SELECT 
         (SELECT COUNT(*) FROM users WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18) AS minor_count,
@@ -72,7 +70,7 @@ $conn->close();
     <style>
      
       .sidebar-left {
-        background-color: #191d67; /* Set the sidebar color in light mode */
+        background-color: #191d67;
       }
       
       .center-wrapper {
@@ -610,49 +608,94 @@ $conn->close();
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-const budgetLabels = <?= json_encode($labels) ?>;
-const budgetData = <?= json_encode($amounts) ?>;
+    <script>
+    const budgetLabels = <?= json_encode($labels) ?>;
+    const budgetData = <?= json_encode($amounts) ?>;
 
-const ctx = document.getElementById('budgetChart').getContext('2d');
+    const ctx = document.getElementById('budgetChart').getContext('2d');
 
-const budgetChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: budgetLabels,
-    datasets: [{
-      label: 'Allocated Budget (₱)',
-      data: budgetData,
-      backgroundColor: '#4CAF50',
-      borderColor: '#388E3C',
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false
+    const budgetChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: budgetLabels,
+        datasets: [{
+          label: 'Allocated Budget (₱)',
+          data: budgetData,
+          backgroundColor: '#4CAF50',
+          borderColor: '#388E3C',
+          borderWidth: 1
+        }]
       },
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            return `₱${parseFloat(context.raw).toLocaleString()}`;
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `₱${parseFloat(context.raw).toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: value => `₱${value.toLocaleString()}`
+            }
           }
         }
       }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: value => `₱${value.toLocaleString()}`
-        }
-      }
+    });
+    </script>
+
+    <script>
+    let lastEventTime = localStorage.getItem('lastEventTime') || null;
+
+    function checkForNewEvents() {
+        fetch('../check_new_events.php')
+            .then(response => response.json())
+            .then(data => {
+                const latestEventTime = data.latest;
+                if (!latestEventTime) return;
+
+                if (!lastEventTime || new Date(latestEventTime) > new Date(lastEventTime)) {
+                    lastEventTime = latestEventTime;
+                    localStorage.setItem('lastEventTime', latestEventTime);
+                    showNotificationModal("📢 New Event Added!");
+                }
+            })
+            .catch(err => console.error('Error checking events:', err));
     }
-  }
-});
-</script>
+
+    function showNotificationModal(message) {
+        const notif = document.getElementById("notification");
+        notif.querySelector("strong").textContent = message;
+        notif.style.display = "block";
+
+        document.getElementById("no-notifications").style.display = "none";
+        $('.modal-notif').modal('show');
+    }
+
+    function removeNotification() {
+        document.getElementById("notification").style.display = "none";
+    }
+
+    function clearAllNotifications() {
+        localStorage.removeItem('lastEventTime');
+        removeNotification();
+        document.getElementById("no-notifications").style.display = "block";
+    }
+
+    // Start polling every 30 seconds
+    setInterval(checkForNewEvents, 30000); // 30 seconds
+    window.addEventListener('DOMContentLoaded', () => {
+        checkForNewEvents(); // Initial check
+    });
+    </script>
 
     <script>
   // Apply saved dark mode on page load
