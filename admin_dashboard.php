@@ -289,9 +289,9 @@ while ($row = $data->fetch_assoc()) {
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="navbarDropdownMenuLink"
             >
-              <a class="dropdown-item" href="profile.php"
-                ><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a
-              >
+              <a class="dropdown-item" href="admin_register.php">
+                <i class="fe fe-user-plus"></i>&nbsp;&nbsp;&nbsp;Register Admin
+              </a>
               <?php if (isset($_SESSION['login_id'])): ?>
               <a class="dropdown-log-out" href="logout.php">
                 <i class="fe fe-log-out"></i>&nbsp;&nbsp;&nbsp;Log Out
