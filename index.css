@@ -37,6 +37,18 @@ nav{
     width: 60px;
 }
 
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* control spacing between images */
+}
+
+.headlogo {
+    width: 180px;
+    height: auto; /* force square size */
+    object-fit: cover; /* or cover, if cropping is okay */
+}
+
 nav ul li{
     display: inline-block;
     list-style: none;
