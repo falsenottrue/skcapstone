@@ -46,7 +46,7 @@ nav{
 .headlogo {
     width: 180px;
     height: auto; /* force square size */
-    object-fit: cover; /* or cover, if cropping is okay */
+    object-fit: contain; /* or cover, if cropping is okay */
 }
 
 nav ul li{
