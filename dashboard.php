@@ -551,8 +551,8 @@ $conn->close();
         <div class="box">
           <p>
             <a href="accomplishment_report.php">
-              <img src="img/accomp.jpg" width="500" alt="Logo" class="logo">
-              <img src="img/accomp2.jpg" width="500" alt="Logo" class="logo">
+              <img src="img/accomp.jpg" width="750" alt="Logo" class="logo">
+              <img src="img/accomp2.jpg" width="750" alt="Logo" class="logo">
             </a>
           </p>
         </div>

@@ -18,7 +18,11 @@
     <div id="header">   
         <div class="container">
                 <nav>
-                    <img src="img/sklogo.png" class="logo">
+                    <div class="logo-group">
+                        <img src="img/barangaylogo.png" class="headlogo">
+                        <img src="img/skchair.png" class="headlogo">
+                        <img src="img/sklogo.png" class="headlogo">
+                    </div>
                     <ul id="sidemenu">
                         <li><a href="#header">Home</a></li>
                         <li><a href="#about">About</a></li>
@@ -137,7 +141,7 @@
             <h1 class="sub-title">Latest <span>Project</span></h1>
             <div class="work-list">
                 <div class="work">
-                    <img src="img/bebeko2.jpg">
+                    <img src="img/accomp2.jpg">
                     <div class="layer">
                         <h3>Accomplishment Report</h3>
                         <p>Programs, Projects, and Activities Implemented!</p>
