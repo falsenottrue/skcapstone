@@ -37,12 +37,6 @@ nav{
     width: 60px;
 }
 
-.logo-group {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* control spacing between images */
-}
-
 .header-logos {
   display: flex;
   justify-content: center; /* center horizontally */
