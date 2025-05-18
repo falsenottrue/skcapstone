@@ -18,10 +18,10 @@
     <div id="header">   
         <div class="container">
                 <nav>
-                    <div class="logo-group">
-                        <img src="img/barangaylogo.png" class="headlogo">
-                        <img src="img/skchair.png" class="headlogo">
-                        <img src="img/sklogo.png" class="headlogo">
+                    <div class="header-logos">
+                        <img src="img/barangaylogo.png" class="headlogo" alt="Barangay Logo">
+                        <img src="img/skchair.png" class="headlogo" alt="SK Chair">
+                        <img src="img/sklogo.png" class="headlogo" alt="SK Logo">
                     </div>
                     <ul id="sidemenu">
                         <li><a href="#header">Home</a></li>
