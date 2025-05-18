@@ -43,10 +43,27 @@ nav{
     gap: 5px; /* control spacing between images */
 }
 
+.header-logos {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+  flex-wrap: nowrap; /* allow stacking on small screens */
+  gap: 10px; /* spacing between images */
+  max-width: 100%;
+  overflow: hidden; /* avoid overflow issues */
+}
+
 .headlogo {
-    width: 150px;
-    height: auto; /* force square size */
-    object-fit: contain; /* or cover, if cropping is okay */
+  width: 100%;
+  max-width: 120px; /* limits size on large screens */
+  height: auto;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+  .headlogo {
+    max-width: 80px; /* allow larger size on small screens if needed */
+  }
 }
 
 nav ul li{
@@ -388,6 +405,9 @@ nav .fas{
 @media only screen and (max-width: 600px){
     #header{
         background-image: url(img/The_Heart_of_Quezon_City.jpg);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
     }
     .header-text{
         margin-top: 100%;
