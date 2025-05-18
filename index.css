@@ -47,7 +47,7 @@ nav{
   display: flex;
   justify-content: center; /* center horizontally */
   align-items: center;
-  flex-wrap: nowrap; /* allow stacking on small screens */
+  flex-wrap: wrap; /* allow stacking on small screens */
   gap: 10px; /* spacing between images */
   max-width: 100%;
   overflow: hidden; /* avoid overflow issues */
