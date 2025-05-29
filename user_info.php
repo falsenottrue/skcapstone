@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $birth_date = $_POST['birth_date'];
     $gender = $_POST['gender'];
     $contact_number = $_POST['contact_number'];
+    $email = $_POST['email'];
     $address = $_POST['address'];
 
     $today = date("Y-m-d");
@@ -33,8 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $stmt = $conn->prepare("INSERT INTO users (user_id, first_name, last_name, birth_date, gender, contact_number, address) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("issssss", $_SESSION['login_id'], $first_name, $last_name, $birth_date, $gender, $contact_number, $address);
+    $login_id = $_SESSION['login_id'];
+
+    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, birth_date, gender, contact_number, email, address, login_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssi", $first_name, $last_name, $birth_date, $gender, $contact_number, $email, $address, $login_id);
+
 
     if ($stmt->execute()) {
         if ($age < 18) {
@@ -42,8 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $guardian_contact = $_POST['guardian_contact'];
             $relationship = $_POST['guardian_relationship'];
 
+            // Get user_id from the insert
+            $user_id = $conn->insert_id;
+
             $stmt2 = $conn->prepare("INSERT INTO guardian_info (user_id, guardian_name, guardian_contact, relationship) VALUES (?, ?, ?, ?)");
-            $stmt2->bind_param("isss", $_SESSION['login_id'], $guardian_name, $guardian_contact, $relationship);
+            $stmt2->bind_param("isss", $user_id, $guardian_name, $guardian_contact, $relationship);
+
             if (!$stmt2->execute()) {
                 // If error adding guardian info, delete everything
                 $conn->query("DELETE FROM guardian_info WHERE user_id = " . $_SESSION['login_id']);
@@ -151,6 +159,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label>Contact Number:</label>
             <input type="text" name="contact_number" class="form-control" autocomplete="off">
+        </div>
+        <div class="mb-3">
+            <label>Email (Must be similar to the email you provided in the login page.):</label>
+            <input type="text" name="email" class="form-control" autocomplete="off">
         </div>
         <div class="mb-3">
             <label>Address:</label>

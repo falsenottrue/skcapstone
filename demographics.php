@@ -10,11 +10,12 @@ if (!isset($_SESSION['login_id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_id = $_SESSION['login_id'];
+    $login_id = $_SESSION['login_id'];
 
-    $checkUserQuery = "SELECT user_id FROM users WHERE user_id = ?";
+    // Check user existence by login_id, fetch user_id
+    $checkUserQuery = "SELECT user_id FROM users WHERE login_id = ?";
     $checkStmt = $conn->prepare($checkUserQuery);
-    $checkStmt->bind_param("i", $user_id);
+    $checkStmt->bind_param("i", $login_id);
     $checkStmt->execute();
     $checkStmt->store_result();
 
@@ -22,8 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('Error: User does not exist.'); window.location.href='dashboard.php';</script>";
         exit();
     }
+
+    $checkStmt->bind_result($user_id);
+    $checkStmt->fetch();
     $checkStmt->close();
 
+    // Now use $user_id for demographics insert
     $youth_classification = $_POST['youth_classification'];
     $specific_needs = $_POST['specific_needs'] ?? 'None';
     $educational_background = $_POST['educational_background'];
@@ -45,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->query("DELETE FROM demographics WHERE user_id = $user_id");
         $conn->query("DELETE FROM guardian_info WHERE user_id = $user_id");
         $conn->query("DELETE FROM users WHERE user_id = $user_id");
-        $conn->query("DELETE FROM login WHERE login_id = $user_id");
+        $conn->query("DELETE FROM login WHERE login_id = $login_id");
         session_destroy();
         echo "<script>alert('Error submitting demographics. Your account was deleted. Please register again.'); window.location.href='register.php';</script>";
     }
@@ -53,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $conn->close();
 }
+
 ?>
 
 
