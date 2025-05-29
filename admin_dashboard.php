@@ -378,6 +378,14 @@ while ($row = $data->fetch_assoc()) {
               </a>
             </li>
           </ul>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+              <a class="nav-link" href="admin_deletion_requests.php">
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e3e3e3"><path d="M480-446.67q-58.33 0-98.17-39.83Q342-526.33 342-584.67q0-58.33 39.83-98.16 39.84-39.84 98.17-39.84t98.17 39.84Q618-643 618-584.67q0 58.34-39.83 98.17-39.84 39.83-98.17 39.83Zm0-66.66q31.33 0 51.33-20t20-51.34q0-31.33-20-51.33T480-656q-31.33 0-51.33 20t-20 51.33q0 31.34 20 51.34 20 20 51.33 20Zm0 432.66q-139.67-35-229.83-161.5Q160-368.67 160-520.67v-240l320-120 320 120v240q0 152-90.17 278.5Q619.67-115.67 480-80.67ZM480-480Zm0-329.67-253.33 95.34v193.66q0 60 16.66 115.34Q260-350 290-302.33q44.67-23.67 91.67-36 47-12.34 98.33-12.34t98.33 12.34q47 12.33 91.67 36 30-47.67 46.67-103 16.66-55.34 16.66-115.34v-193.66L480-809.67ZM480-284q-38 0-75.33 9.33-37.34 9.34-73 27.34Q362.67-214 400-189t80 39q42.67-14 80-39t68.33-58.33q-35.66-18-73-27.34Q518-284 480-284Z"/></svg>  
+                <span class="ml-3 item-text">User Requests</span>
+              </a>
+            </li>
+          </ul>
         </nav>
       </aside>
 
@@ -659,7 +667,7 @@ while ($row = $data->fetch_assoc()) {
         <!-- Charts & Budget -->
         <div class="container mt-1">
           <!-- Budget Chart -->
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="card shadow">
               <div class="card-header">Budgeting Plan</div>
               <div class="card-body">
