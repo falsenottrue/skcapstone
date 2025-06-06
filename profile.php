@@ -464,9 +464,13 @@ $conn->close();
             <p><strong>Username:</strong> <?= htmlspecialchars($user['usernm']) ?></p>
             <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
             <!-- Request Deletion Button -->
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletionModal">
-              Request Account Deletion
-          </button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletionModal">
+                Request Account Deletion
+            </button>
+            <!-- Add this where appropriate (e.g., navbar) -->
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                Change Password
+            </button>
 
           <!-- Deletion Request Modal -->
           <div class="modal fade" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
@@ -486,6 +490,56 @@ $conn->close();
               </form>
             </div>
           </div>
+          <!-- Change Password Modal -->
+          <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <form method="post" action="process_change_password.php" id="changePasswordForm">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="mb-3">
+                                  <label for="current_password" class="form-label">Current Password</label>
+                                  <input type="password" name="current_password" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                  <label for="new_password" class="form-label">New Password</label>
+                                  <input type="password" name="new_password" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                  <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                  <input type="password" name="confirm_password" class="form-control" required>
+                              </div>
+                              <div id="passwordMsg" class="text-danger small"></div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="submit" class="btn btn-primary">Update Password</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <!-- Password Success Modal -->
+          <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                  <h5 class="modal-title" id="successLabel">Success</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                  ✅ Your password has been updated successfully.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
             </div>
           </div>
         </div>
@@ -595,7 +649,7 @@ $conn->close();
     <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/jquery.dataTables`.min.js"></script>
     <script src="js/dataTables.bootstrap4.min.js"></script>
-
+    
     <script>
   // Apply saved dark mode on page load
   window.addEventListener("DOMContentLoaded", function () {
@@ -655,5 +709,41 @@ $conn->close();
       window.location.href = "logout.php";
     }
 </script>
+    <script>
+    document.getElementById("changePasswordForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch("process_change_password.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(response => {
+            const msgBox = document.getElementById("passwordMsg");
+            if (response.includes("successfully")) {
+                // Hide change password modal
+                const changeModal = bootstrap.Modal.getInstance(document.getElementById("changePasswordModal"));
+                changeModal.hide();
+
+                // Show success modal
+                const successModal = new bootstrap.Modal(document.getElementById("successModal"));
+                successModal.show();
+
+                msgBox.textContent = "";
+                form.reset();
+            } else {
+                msgBox.textContent = response; // Show any error from PHP
+            }
+        })
+        .catch(() => {
+            document.getElementById("passwordMsg").textContent = "Something went wrong. Please try again.";
+        });
+    });
+    </script>
+
+
 </body>
 </html>
